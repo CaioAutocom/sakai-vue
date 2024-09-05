@@ -2,8 +2,8 @@
     "files": [],
     "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
     "compilerOptions": {
-        "target": "es6", // Altere de "es5" para "es6" ou posterior
-        "lib": ["dom", "es2015"], // Não precisa incluir "es6" separadamente
+        "target": "ES2020",
+        "lib": ["ES2015", "DOM"],
         "types": ["reflect-metadata"],
         "module": "commonjs",
         "moduleResolution": "node",
