@@ -27,10 +27,11 @@ const onSelectCompany = (company) => {
                 <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
                     <div class="text-center mb-8 items-center justify-center">
                         <div class="w-full flex flex-col items-center justify-center mb-8">
-                            <img src="../../../assets/images/logotipo.png" width="90" />
+                            <img src="../../../assets/images/logotipo.png" width="150px" />
                         </div>
+                        <div class="w-96"></div>
                         <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4" v-if="!isLoggedIn">Bem vindo ao eSistem!</div>
-                        <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4" v-if="isLoggedIn">{{ `Bem vindo ${user.userName}!` }}</div>
+                        <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4" v-if="isLoggedIn">{{ `Olá, ${user.userName}!` }}</div>
                         <span class="text-muted-color font-medium" v-else>Autentique-se para continuar</span>
                     </div>
                     <div>
