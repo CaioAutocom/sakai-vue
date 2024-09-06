@@ -8,17 +8,22 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Button: typeof import('primevue/button')['default']
+    Carousel: typeof import('primevue/carousel')['default']
     Chart: typeof import('primevue/chart')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     Column: typeof import('primevue/column')['default']
     DataTable: typeof import('primevue/datatable')['default']
     FloatingConfigurator: typeof import('./src/components/FloatingConfigurator.vue')['default']
+    Galleria: typeof import('primevue/galleria')['default']
+    Image: typeof import('primevue/image')['default']
     InputText: typeof import('primevue/inputtext')['default']
     Menu: typeof import('primevue/menu')['default']
     Password: typeof import('primevue/password')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Select: typeof import('primevue/select')['default']
     SelectButton: typeof import('primevue/selectbutton')['default']
+    Tag: typeof import('primevue/tag')['default']
     Toast: typeof import('primevue/toast')['default']
   }
   export interface ComponentCustomProperties {
