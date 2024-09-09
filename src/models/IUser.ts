@@ -1,6 +1,6 @@
-import { Tenant } from './Tenant';
+import { ITenant } from './ITenant';
 
-export interface User {
+export interface IUser {
     id: string;
     userName: string;
     firstName: string;
@@ -11,5 +11,5 @@ export interface User {
     phoneNumber: string | null;
     imageUrl: string | null;
     tenantId: string | null;
-    tenants: Tenant[];
+    tenants: ITenant[];
 }

@@ -1,4 +1,5 @@
 import AppLayout from '@/layout/AppLayout.vue';
+import Pessoas from '@/views/pages/pessoas.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -17,6 +18,11 @@ const router = createRouter({
                     path: '/uikit/formlayout',
                     name: 'formlayout',
                     component: () => import('@/views/uikit/FormLayout.vue')
+                },
+                {
+                    path: '/pessoas',
+                    name: 'pessoas',
+                    component: Pessoas
                 },
                 {
                     path: '/uikit/input',

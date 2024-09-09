@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia';
 import { container } from '../containers/container';
 import { IAuthService } from '../interfaces/IAuthService';
-import { Tenant } from '../models/Tenant';
-import { User } from '../models/User';
+import { ITenant } from '../models/ITenant';
+import { IUser } from '../models/IUser';
 
 const authService = container.get<IAuthService>('IAuthService');
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        user: null as User | null,
-        selectedCompany: null as Tenant | null,
+        user: null as IUser | null,
+        selectedCompany: null as ITenant | null,
         isLoggedIn: false
     }),
 
