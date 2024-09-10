@@ -133,6 +133,17 @@ function deleteSelectedProducts() {
 
         <Dialog v-model:visible="pessoaDialog" header="Novo Cliente" :modal="true">
             <form autocomplete="off">
+                <div class="flex flex-row gap-4 flex-wrap">
+                    <div class="flex flex-col gap-2 w-32">
+                        <label for="idalternativo" class="block">Cód. Alternativo</label>
+                        <InputText id="idalternativo" v-model.trim="novoCliente.idAlternativo"/>
+                    </div>
+                    <div class="flex flex-wrap gap-2 w-full sm:w-auto ml-auto mt-1">
+                        <Checkbox id="ativo" name="ativo" :binary="true" v-model="novoCliente.ativo"/>
+                        <label for="ativo" class="ml-2">Ativo</label>
+                    </div>
+                </div>
+
                 <div class="flex flex-col md:flex-row gap-4">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="nome" class="block">Nome</label>
