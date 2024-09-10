@@ -6,8 +6,8 @@ import AppMenuItem from './AppMenuItem.vue';
 const model = ref([
     {
         items: [
-            { label: 'Pessoas', icon: 'pi pi-fw pi-id-card', to: '/pessoas' },
-            { label: 'Usuários', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' }
+            { label: 'Pessoas', icon: 'pi pi-fw pi-users', to: '/pessoas' },
+            { label: 'Usuários', icon: 'pi pi-fw pi-sitemap', to: '/uikit/formlayout' }
         ]
     }
 ]);

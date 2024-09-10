@@ -140,7 +140,7 @@ function deleteSelectedProducts() {
             </Toolbar>
         </div>
 
-        <Dialog v-model:visible="pessoaDialog" header="Novo Cliente" :style="{ width: '800px' }" :modal="true">
+        <Dialog v-model:visible="pessoaDialog" header="Novo Cliente" :style="{ width: '900px' }" :modal="true">
             <form autocomplete="off">
                 <div class="flex flex-row gap-4 flex-wrap">
                     <div class="flex flex-col gap-2 max-w-32">
