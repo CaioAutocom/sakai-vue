@@ -1,7 +1,16 @@
 import { useVuelidate } from '@vuelidate/core';
 import { email, maxLength, minLength, numeric, required } from '@vuelidate/validators';
+import { cnpj, cpf } from 'cpf-cnpj-validator';
 import { reactive } from 'vue';
 import { ICliente } from '../models/ICliente';
+
+const cpfCnpjValidator = (value: string) => {
+    const cleanedValue = value.replace(/\D/g, '');
+    if (cleanedValue.length <= 11) {
+        return cpf.isValid(cleanedValue);
+    }
+    return cnpj.isValid(cleanedValue);
+};
 
 export default {
     setup() {
@@ -29,7 +38,14 @@ export default {
             nome: { required, minLength: minLength(5), maxLength: maxLength(100) },
             apelido: { minLength: minLength(3), maxLength: maxLength(150) },
             fisJur: { required, numeric },
-            cpfCnpj: { required, minLength: minLength(11), maxLength: maxLength(14) },
+            cpfCnpj: {
+                required,
+                minLength: minLength(11),
+                maxLength: maxLength(14),
+                $params: {
+                    cpfCpnj: cpfCnpjValidator
+                }
+            },
             identidade: { maxLength: maxLength(20) },
             identidadeEmissor: { maxLength: maxLength(20) },
             inscricaoEstadual: { maxLength: maxLength(20) },
@@ -45,6 +61,18 @@ export default {
 
         const v$ = useVuelidate(rules, state);
 
-        return { state, v$ };
+        function getCpfCnpjError() {
+            if (state.cpfCnpj === '') return '';
+
+            const cleanedValue = state.cpfCnpj.replace(/\D/g, '');
+            if (cleanedValue.length <= 11 && !cpf.isValid(cleanedValue)) {
+                return 'CPF inválido';
+            } else if (!cnpj.isValid(cleanedValue)) {
+                return 'CNPJ inválido';
+            }
+            return '';
+        }
+
+        return { state, v$, getCpfCnpjError };
     }
 };

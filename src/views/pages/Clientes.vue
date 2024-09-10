@@ -19,7 +19,7 @@ const products = ref();
 const pessoaDialog = ref(false);
 const deleteProductDialog = ref(false);
 const deleteProductsDialog = ref(false);
-const { state, v$ } = CadastroClienteValidation.setup();
+const { state, v$, getCpfCnpjError } = CadastroClienteValidation.setup();
 const selectedProducts = ref();
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS }
@@ -139,8 +139,7 @@ function deleteSelectedProducts() {
                 </template>
             </Toolbar>
         </div>
-
-        <Dialog v-model:visible="pessoaDialog" header="Novo Cliente" :style="{ width: '900px' }" :modal="true">
+        <div class="card" v-if="pessoaDialog">
             <form autocomplete="off">
                 <div class="flex flex-row gap-4 flex-wrap">
                     <div class="flex flex-col gap-2 max-w-32">
@@ -171,7 +170,7 @@ function deleteSelectedProducts() {
                     <div class="flex flex-wrap gap-2 content-start">
                         <label for="cpfcnpj" class="block">CPF/CNPJ</label>
                         <InputText id="cpfcnpj" v-model="state.cpfCnpj" required fluid />
-                        <small v-if="v$.cpfCnpj.$error" class="text-red-500">CPF inválido.</small>
+                        <!-- <small v-if="!v$.value.cpfCnpj.$pending && !getCpfCnpjError()" class="text-red-500"> {{ getCpfCnpjError() }}</small> -->
                     </div>
                     <div class="flex flex-wrap gap-2 content-start">
                         <label for="fisJur" class="block">Tipo</label>
@@ -224,13 +223,13 @@ function deleteSelectedProducts() {
                     <Textarea id="observacao" v-model="state.observacao" rows="4" class="min-h-40" fluid />
                     <small v-if="v$.observacao.$error" class="text-red-500">Observação deve ter no máximo 2000 caracteres.</small>
                 </div>
-            </form>
 
-            <template #footer>
-                <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" severity="warning" />
-                <Button label="Save" icon="pi pi-check" @click="salvarCliente" />
-            </template>
-        </Dialog>
+                <div class="justify-end mt-3">
+                    <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" severity="warning" />
+                    <Button label="Save" icon="pi pi-check" @click="salvarCliente" />
+                </div>
+            </form>
+        </div>
 
         <Dialog v-model:visible="deleteProductDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
             <div class="flex items-center gap-4">
