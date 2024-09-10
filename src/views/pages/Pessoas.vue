@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FilterMatchMode } from '@primevue/core/api';
+import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
 import { TipoPessoa } from '../../models/enums/TipoPessoa';
@@ -11,6 +12,7 @@ import { ICliente } from '../../models/ICliente';
 // });
 
 const toast = useToast();
+const confirm = useConfirm();
 const dt = ref();
 const products = ref();
 const pessoaDialog = ref(false);
@@ -131,20 +133,20 @@ function deleteSelectedProducts() {
             </Toolbar>
         </div>
 
-        <Dialog v-model:visible="pessoaDialog" header="Novo Cliente" :modal="true">
+        <Dialog v-model:visible="pessoaDialog" header="Novo Cliente" :style="{ width: '800px' }" :modal="true">
             <form autocomplete="off">
                 <div class="flex flex-row gap-4 flex-wrap">
-                    <div class="flex flex-col gap-2 w-32">
+                    <div class="flex flex-col gap-2 max-w-32">
                         <label for="idalternativo" class="block">Cód. Alternativo</label>
-                        <InputText id="idalternativo" v-model.trim="novoCliente.idAlternativo"/>
+                        <InputText size="small" id="idalternativo" v-model.trim="novoCliente.idAlternativo" class="mb-3" />
                     </div>
                     <div class="flex flex-wrap gap-2 w-full sm:w-auto ml-auto mt-1">
-                        <Checkbox id="ativo" name="ativo" :binary="true" v-model="novoCliente.ativo"/>
+                        <Checkbox id="ativo" name="ativo" :binary="true" v-model="novoCliente.ativo" />
                         <label for="ativo" class="ml-2">Ativo</label>
                     </div>
                 </div>
 
-                <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex flex-col md:flex-row gap-4 mb-2">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="nome" class="block">Nome</label>
                         <InputText id="nome" v-model.trim="novoCliente.nome" required autofocus :invalid="submitted && !novoCliente.nome" fluid />
@@ -156,25 +158,24 @@ function deleteSelectedProducts() {
                     </div>
                 </div>
                 <div class="flex flex-col md:flex-row gap-4">
-                    <div class="flex flex-wrap gap-2 w-full">
+                    <div class="flex flex-wrap gap-2">
                         <label for="cpfcnpj" class="block">CPF/CNPJ</label>
                         <InputText id="cpfcnpj" v-model="novoCliente.cpfCnpj" required fluid />
                     </div>
-                    <div class="flex flex-wrap gap-2 w-full">
+                    <div class="flex flex-wrap gap-2">
                         <label for="fisJur" class="block">Tipo</label>
                         <Select id="fisJur" v-model="novoCliente.fisJur" :options="tiposPessoa" optionLabel="label" placeholder="Tipo de Pessoa" fluid class="w-full" />
                     </div>
-                </div>
-                <div class="flex flex-col md:flex-row gap-4 mt-2">
-                    <div class="flex flex-wrap gap-2 w-full">
+                    <div class="flex flex-wrap gap-2">
                         <label for="identidade" class="block">Identidade</label>
                         <InputText id="identidade" v-model="novoCliente.identidade" required fluid />
                     </div>
-                    <div class="flex flex-wrap gap-2 w-full">
+                    <div class="flex flex-wrap gap-2">
                         <label for="identidadeEmissor" class="block">Identidade Emissor</label>
                         <InputText id="identidadeEmissor" v-model="novoCliente.identidadeEmissor" required fluid />
                     </div>
                 </div>
+                <div class="flex flex-col md:flex-row gap-4 mt-2"></div>
                 <div class="flex flex-col md:flex-row gap-4">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="inscricaoProdutorRural" class="block">Inscrição Produtor Rural</label>
@@ -201,12 +202,12 @@ function deleteSelectedProducts() {
                 </div>
                 <div class="flex flex-col w-full">
                     <label for="observacao" class="block">Observação</label>
-                    <Textarea id="observacao" v-model="novoCliente.observacao" rows="4" fluid />
+                    <Textarea id="observacao" v-model="novoCliente.observacao" rows="4" class="min-h-40" fluid />
                 </div>
             </form>
 
             <template #footer>
-                <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+                <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" severity="warning" />
                 <Button label="Save" icon="pi pi-check" @click="saveProduct" />
             </template>
         </Dialog>
