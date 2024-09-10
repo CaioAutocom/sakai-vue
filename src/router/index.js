@@ -1,5 +1,5 @@
 import AppLayout from '@/layout/AppLayout.vue';
-import Pessoas from '@/views/pages/pessoas.vue';
+import Clientes from '@/views/pages/clientes.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -22,7 +22,7 @@ const router = createRouter({
                 {
                     path: '/pessoas',
                     name: 'pessoas',
-                    component: Pessoas
+                    component: Clientes
                 },
                 {
                     path: '/uikit/input',
