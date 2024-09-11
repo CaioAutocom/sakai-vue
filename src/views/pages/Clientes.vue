@@ -68,15 +68,12 @@ function salvarCliente() {
     submitted.value = true;
 
     v$.value.$touch();
-
+    toast.add({ severity: 'success', summary: 'Sucesso!', detail: 'Novo cliente adicionado', life: 3000 });
     if (!v$.value.$invalid) {
         // A lógica de salvar vai aqui
         pessoaDialog.value = false;
         novoCliente.value = criarNovoCliente();
-        // Mensagem de sucesso ou outra ação
-    } else {
-        // Lógica de erro ou aviso de validação
-        console.log('Formulário contém erros');
+        toast.add({ severity: 'success', summary: 'Successful', detail: 'Novo cliente adicionado', life: 3000 });
     }
 }
 
@@ -142,7 +139,6 @@ function deleteSelectedProducts() {
         </div>
         <div class="card" v-if="pessoaDialog">
             <form autocomplete="off">
-                <!-- Primeira Linha: Código Alternativo e Ativo -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex flex-col gap-1 sm:max-w-xs">
                         <label for="idalternativo" class="block">Cód. Alternativo</label>
@@ -155,14 +151,13 @@ function deleteSelectedProducts() {
                     </div>
                 </div>
 
-                <!-- Segunda Linha: Nome, Apelido e Tipo de Pessoa -->
                 <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4 mt-4">
                     <div class="flex flex-col md:col-span-2 gap-1">
                         <label for="nome" class="block">Nome</label>
                         <InputText id="nome" v-model.trim="state.nome" required autofocus :invalid="submitted && !state.nome" fluid class="" />
                         <small v-if="v$.nome.$error" class="text-red-500">Nome é obrigatório e deve ter entre 5 e 100 caracteres.</small>
                     </div>
-                    <div class="flex flex-col md:col-span-2 gap-1">
+                    <div class="flex flex-col xl:col-span-2 gap-1">
                         <label for="apelido" class="block">Apelido</label>
                         <InputText id="apelido" v-model="state.apelido" required fluid />
                         <small v-if="v$.apelido.$error" class="text-red-500">Apelido deve ter entre 3 e 150 caracteres.</small>
@@ -172,7 +167,7 @@ function deleteSelectedProducts() {
                         <label for="cpfcnpj" class="block">CPF/CNPJ</label>
                         <InputText id="cpfcnpj" v-model="state.cpfCnpj" required fluid />
                     </div>
-                    <div class="flex flex-col gap-1 ml-5">
+                    <div class="flex flex-col gap-1">
                         <label for="fisJur" class="block mb-3">Tipo</label>
                         <div class="flex gap-4 items-center">
                             <RadioButton id="option1" name="option" value="Física" />
@@ -183,7 +178,6 @@ function deleteSelectedProducts() {
                     </div>
                 </div>
 
-                <!-- Terceira Linha: CPF/CNPJ e Identidade/Emissor -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
                     <div class="flex flex-col gap-1">
                         <label for="identidade" class="block">Identidade</label>
@@ -207,8 +201,7 @@ function deleteSelectedProducts() {
                     </div>
                 </div>
 
-                <!-- Quarta Linha: Inscrições -->
-                <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols 4 gap-4 mt-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols 4 gap-4 mt-4">
                     <div class="flex flex-col gap-1">
                         <label for="nascimento" class="block">Nascimento</label>
                         <DatePicker :showIcon="true" id="nascimento" v-model="state.nascimento" class="w-full" />
@@ -219,14 +212,13 @@ function deleteSelectedProducts() {
                         <DatePicker :showIcon="true" id="fundacao" v-model="state.fundacao" class="w-full" />
                         <small v-if="v$.fundacao.$error" class="text-red-500">A data de fundação deve ser informada.</small>
                     </div>
-                    <div class="flex flex-col gap-1">
+                    <div class="flex flex-col md:col-span-2 gap-1">
                         <label for="site" class="block">Site</label>
                         <InputText id="site" v-model="state.site" required fluid />
                         <small v-if="v$.site.$error" class="text-red-500">Site deve ter no máximo 150 caracteres.</small>
                     </div>
                 </div>
 
-                <!-- Sétima Linha: Observação -->
                 <div class="grid grid-cols-1 gap-4 mt-4">
                     <div class="flex flex-col gap-1">
                         <label for="observacao" class="block">Observação</label>
@@ -235,9 +227,8 @@ function deleteSelectedProducts() {
                     </div>
                 </div>
 
-                <!-- Botões -->
                 <div class="flex justify-end mt-4 gap-2">
-                    <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog" />
+                    <Button label="Cancelar" icon="pi pi-times text-orange-500" text @click="hideDialog" />
                     <Button label="Salvar" icon="pi pi-check" @click="salvarCliente" />
                 </div>
             </form>
