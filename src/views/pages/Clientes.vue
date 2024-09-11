@@ -155,7 +155,7 @@ function deleteSelectedProducts() {
                     <div class="flex flex-col md:col-span-2 gap-1">
                         <label for="nome" class="block">Nome</label>
                         <InputText id="nome" v-model.trim="state.nome" required autofocus :invalid="submitted && !state.nome" fluid class="" />
-                        <small v-if="v$.nome.$error" class="text-red-500">Nome é obrigatório e deve ter entre 5 e 100 caracteres.</small>
+                        <small v-for="error of v$.nome.$errors" :key="error.$uid" class="text-red-500"> {{ error.$message }}</small>
                     </div>
                     <div class="flex flex-col xl:col-span-2 gap-1">
                         <label for="apelido" class="block">Apelido</label>
@@ -166,6 +166,7 @@ function deleteSelectedProducts() {
                     <div class="flex flex-col gap-1">
                         <label for="cpfcnpj" class="block">CPF/CNPJ</label>
                         <InputText id="cpfcnpj" v-model="state.cpfCnpj" required fluid />
+                        <small v-if="v$?.cpfCnpj?.$error" class="text-red-500">{{ getCpfCnpjError() }}</small>
                     </div>
                     <div class="flex flex-col gap-1">
                         <label for="fisJur" class="block mb-3">Tipo</label>

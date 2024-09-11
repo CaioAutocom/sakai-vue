@@ -1,15 +1,17 @@
 import { useVuelidate } from '@vuelidate/core';
-import { email, maxLength, minLength, numeric, required } from '@vuelidate/validators';
+import { email, helpers, maxLength, minLength, numeric, required } from '@vuelidate/validators';
 import { cnpj, cpf } from 'cpf-cnpj-validator';
 import { reactive } from 'vue';
 import { ICliente } from '../models/ICliente';
 
-const cpfCnpjValidator = (value: string) => {
+const isCpfCnpjValid = (value: string) => {
     const cleanedValue = value.replace(/\D/g, '');
-    if (cleanedValue.length <= 11) {
+    if (cleanedValue.length === 11) {
         return cpf.isValid(cleanedValue);
+    } else if (cleanedValue.length === 14) {
+        return cnpj.isValid(cleanedValue);
     }
-    return cnpj.isValid(cleanedValue);
+    return false; // Return false if it's neither 11 nor 14 digits
 };
 
 export default {
@@ -33,18 +35,21 @@ export default {
             ativo: true
         });
 
+        const requiredMessage = 'Campo de preenchimento obrigatório.';
+
         const rules = {
             idAlternativo: { required, maxLength: maxLength(25) },
-            nome: { required, minLength: minLength(5), maxLength: maxLength(100) },
+            nome: {
+                required: helpers.withMessage(requiredMessage, required),
+                minLength: minLength(5),
+                maxLength: maxLength(100)
+            },
             apelido: { minLength: minLength(3), maxLength: maxLength(150) },
             fisJur: { required, numeric },
             cpfCnpj: {
-                required,
                 minLength: minLength(11),
                 maxLength: maxLength(14),
-                $params: {
-                    cpfCpnj: cpfCnpjValidator
-                }
+                isCpfCnpjValid
             },
             identidade: { maxLength: maxLength(20) },
             identidadeEmissor: { maxLength: maxLength(20) },
@@ -62,15 +67,15 @@ export default {
         const v$ = useVuelidate(rules, state);
 
         function getCpfCnpjError() {
-            if (state.cpfCnpj === '') return '';
+            if (!v$ || !state.cpfCnpj || state.cpfCnpj === '') return '';
 
             const cleanedValue = state.cpfCnpj.replace(/\D/g, '');
-            if (cleanedValue.length <= 11 && !cpf.isValid(cleanedValue)) {
+
+            if (cleanedValue.length == 11 && !cpf.isValid(cleanedValue)) {
                 return 'CPF inválido';
-            } else if (!cnpj.isValid(cleanedValue)) {
+            } else if (cleanedValue.length == 14 && !cnpj.isValid(cleanedValue)) {
                 return 'CNPJ inválido';
             }
-            return '';
         }
 
         return { state, v$, getCpfCnpjError };
