@@ -1,3 +1,6 @@
+import { ICliente } from 'models/ICliente';
+
 export interface IClienteService {
-    salvar();
+    createCliente(cliente: ICliente): Promise<void>;
+    getClientes(): Promise<ICliente[]>;
 }

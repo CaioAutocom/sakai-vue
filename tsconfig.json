@@ -1,13 +1,20 @@
 {
-    "extends": "./tsconfig.app.json",
-    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
-    "exclude": ["node_modules"],
     "compilerOptions": {
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "baseUrl": "src",
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "lib": ["esnext", "dom"],
+        "strict": true,
+        "jsx": "preserve",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "baseUrl": "./",
         "paths": {
             "@/*": ["src/*"]
-        }
-    }
+        },
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+    "exclude": ["node_modules"]
 }

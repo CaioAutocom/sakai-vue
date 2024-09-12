@@ -1,5 +1,4 @@
 import AppLayout from '@/layout/AppLayout.vue';
-import Clientes from '@/views/pages/clientes.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -12,7 +11,7 @@ const router = createRouter({
                 {
                     path: '/pessoas',
                     name: 'pessoas',
-                    component: Clientes
+                    component: () => import('@/views/pages/clientes/ClientesPage.vue')
                 }
             ]
         },
