@@ -1,7 +1,7 @@
 export interface ICliente {
     idAlternativo: string;
     nome: string;
-    apelido: string;
+    apelido: string | null;
     fisJur: number;
     cpfCnpj: string;
     identidade: string;
