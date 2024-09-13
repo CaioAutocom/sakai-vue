@@ -1,6 +1,6 @@
-import { API_ENDPOINTS } from 'api/api.endpoints';
 import axios from 'axios';
 import { useToast } from 'primevue/usetoast';
+import { API_ENDPOINTS } from '../api/api.endpoints';
 
 const toast = useToast();
 

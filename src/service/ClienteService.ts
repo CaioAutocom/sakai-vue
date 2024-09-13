@@ -1,7 +1,7 @@
-import { API_ENDPOINTS } from '@/api/api.endpoints';
-import api from '@/interceptors/api.interceptors';
-import { IClienteService } from 'interfaces/IClienteService';
-import { ICliente } from 'models/ICliente';
+import { API_ENDPOINTS } from '../api/api.endpoints';
+import api from '../interceptors/api.interceptors';
+import { IClienteService } from '../interfaces/IClienteService';
+import { ICliente } from '../models/ICliente';
 
 export class ClienteService implements IClienteService {
     async createCliente(cliente: ICliente): Promise<void> {

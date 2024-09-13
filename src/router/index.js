@@ -1,5 +1,5 @@
-import AppLayout from '@/layout/AppLayout.vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import AppLayout from '../../src/layout/AppLayout.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -11,14 +11,14 @@ const router = createRouter({
                 {
                     path: '/pessoas',
                     name: 'pessoas',
-                    component: () => import('@/views/pages/clientes/ClientesPage.vue')
+                    component: () => import('../../src/views/pages/clientes/ClientesPage.vue')
                 }
             ]
         },
         {
             path: '/login',
             name: 'login',
-            component: () => import('@/views/pages/auth/Login.vue')
+            component: () => import('../views/pages/auth/Login.vue')
         }
     ]
 });

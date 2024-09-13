@@ -1,6 +1,6 @@
 <script setup>
-import { useAuthStore } from '@/store/authStore.ts';
 import { computed, ref } from 'vue';
+import { useAuthStore } from '../../../store/authStore';
 
 const email = ref('');
 const password = ref('');
