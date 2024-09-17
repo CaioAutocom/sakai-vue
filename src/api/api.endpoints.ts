@@ -11,7 +11,9 @@ export const API_ENDPOINTS = {
     tokens: '/token',
     tokensRefresh: '/token/refresh',
     //login
-    login: '/user/login'
+    login: '/user/login',
     // tenants
     // persons
+    personCreate: '/person/create',
+    personListAll: '/person/list-all'
 };

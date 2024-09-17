@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { container } from '../containers/container';
+import { container } from '../containers';
 import { IAuthService } from '../interfaces/IAuthService';
 import { ITenant } from '../models/ITenant';
 import { IUser } from '../models/IUser';

@@ -3,9 +3,9 @@ import { FilterMatchMode } from '@primevue/core/api';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { ref } from 'vue';
-import { TipoPessoa } from '../../models/enums/TipoPessoa';
-import { ICliente } from '../../models/ICliente';
-import CadastroClienteValidation from '../../validations/CadastroClienteValidation';
+import { TipoPessoa } from '../../../models/enums/TipoPessoa';
+import { ICliente } from '../../../models/ICliente';
+import CadastroClienteValidation from '../../../validations/CadastroClienteValidation';
 
 // carregar as pessoas
 // onMounted(() => {

@@ -1,5 +1,5 @@
 import AppLayout from '@/layout/AppLayout.vue';
-import Clientes from '@/views/pages/clientes.vue';
+import Clientes from '@/views/pages/clientes/clientesPage.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
