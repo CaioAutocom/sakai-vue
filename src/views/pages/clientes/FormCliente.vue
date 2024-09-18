@@ -21,8 +21,10 @@
 <script setup lang="ts">
 import { ICliente } from 'models/ICliente';
 import { useToast } from 'primevue/usetoast';
-import { useClienteStore } from 'store/clienteStore';
 import { ref, watch } from 'vue';
+// import { useClienteStore } from '../../../store/clienteStore';
+import CadastroClienteValidation from '../../../validations/CadastroClienteValidation';
+
 const props = defineProps<{
     visible: boolean;
     cliente: ICliente | null;
@@ -30,16 +32,17 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:visible', 'save']);
 const toast = useToast();
-const clienteStore = useClienteStore();
-const cliente = ref<ICliente>(props.cliente || criarNovoCliente());
+// const clienteStore = useClienteStore();
+const cliente = ref<ICliente>(props.cliente);
 const errors = ref<{ [key: string]: boolean }>({});
+const { state, v$, getCpfCnpjError } = CadastroClienteValidation.setup();
 const salvarCliente = async () => {
     if (validate()) {
         try {
             if (cliente.value.idAlternativo) {
-                await clienteStore.atualizarCliente(cliente.value);
+                // await clienteStore.atualizarCliente(cliente.value);
             } else {
-                await clienteStore.cadastrarCliente(cliente.value);
+                // await clienteStore.cadastrarCliente(cliente.value);
             }
             emit('save');
             toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Cliente salvo com sucesso', life: 3000 });
@@ -56,30 +59,11 @@ const validate = () => {
     // Implementar validação aqui
     return true;
 };
-function criarNovoCliente(): ICliente {
-    return {
-        idAlternativo: '',
-        nome: '',
-        apelido: '',
-        fisJur: 0,
-        cpfCnpj: '',
-        identidade: '',
-        identidadeEmissor: '',
-        inscricaoEstadual: '',
-        inscricaoMunicipal: '',
-        inscricaoProdutorRural: '',
-        inscricaoSuFrama: '',
-        nascimento: new Date(),
-        fundacao: new Date(),
-        site: '',
-        observacao: '',
-        ativo: true
-    };
-}
+
 watch(
     () => props.cliente,
     (newCliente) => {
-        cliente.value = newCliente ? { ...newCliente } : criarNovoCliente();
+        cliente.value = newCliente ? { ...newCliente } : null;
     }
 );
 </script>

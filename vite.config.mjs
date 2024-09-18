@@ -16,7 +16,8 @@ export default defineConfig({
     plugins: [
         vue(),
         Components({
-            resolvers: [PrimeVueResolver()]
+            resolvers: [PrimeVueResolver()],
+            dirs: ['src/views/']
         })
     ],
     resolve: {
