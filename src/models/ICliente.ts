@@ -10,8 +10,8 @@ export interface ICliente {
     inscricaoMunicipal: string | '';
     inscricaoProdutorRural: string | '';
     inscricaoSuFrama: string | '';
-    nascimento: Date | '';
-    fundacao: Date | '';
+    nascimento: Date | null;
+    fundacao: Date | null;
     site: string | '';
     observacao: string | '';
     ativo: boolean | '';
