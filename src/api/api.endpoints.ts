@@ -1,6 +1,6 @@
 export const API_ENDPOINTS = {
-    apiUrl: 'http://192.168.245.12:5099/api',
-    apiUrlHttps: 'https://192.168.245.12:5100/api',
+    apiUrl: 'http://192.168.245.250:5099/api',
+    apiUrlHttps: 'https://192.168.245.250:5100/api',
     // users
     addUser: '/users',
     getAllUsers: '/users',
@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
     // tokens
     tokens: '/token',
     tokensRefresh: '/token/refresh',
+    obterToken: '/token/create',
     //login
     login: '/user/login',
     // tenants

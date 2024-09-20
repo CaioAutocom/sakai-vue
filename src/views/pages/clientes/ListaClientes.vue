@@ -57,7 +57,9 @@ import { ICliente } from 'models/ICliente';
 import { useToast } from 'primevue/usetoast';
 import { useClienteStore } from '../../../store/clienteStore';
 import { onMounted, ref } from 'vue';
+import { useConfirm } from 'primevue/useconfirm';
 
+const confirmPopup = useConfirm();
 const clienteStore = useClienteStore();
 const toast = useToast();
 const filters = ref({

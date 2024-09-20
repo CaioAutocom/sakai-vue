@@ -11,5 +11,5 @@ export interface IUser {
     phoneNumber: string | null;
     imageUrl: string | null;
     tenantId: string | null;
-    tenants: ITenant[];
+    tenants: ITenant[] | null;
 }

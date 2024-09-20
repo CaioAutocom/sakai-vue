@@ -91,7 +91,8 @@
                     </div>
 
                     <div class="flex justify-end mt-4 gap-2">
-                        <Button label="Cancelar" icon="pi pi-times text-orange-500" text @click="cancelarForm" />
+                        <ConfirmPopup></ConfirmPopup>
+                        <Button label="Cancelar" icon="pi pi-times text-orange-500" text @click="confirm($event)" />
                         <Button label="Salvar" icon="pi pi-check" @click="salvarCliente" />
                     </div>
                 </form>
@@ -102,22 +103,40 @@
 
 <script setup lang="ts">
 import { ICliente } from 'models/ICliente';
+import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { ref, watch } from 'vue';
 import { useClienteStore } from '../../../store/clienteStore';
-
 import CadastroClienteValidation from '../../../validations/CadastroClienteValidation';
 
 const props = defineProps<{
     visible: boolean;
     cliente: ICliente | null;
 }>();
+const confirmPopup = useConfirm();
 
+function confirm(event) {
+    confirmPopup.require({
+        target: event.target,
+        message: 'Deseja cancelar o cadastro de cliente?',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Não',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Sim'
+        },
+        accept: () => {
+            cancelarForm();
+        }
+    });
+}
 const emit = defineEmits(['save', 'formVisible']);
 const toast = useToast();
 const clienteStore = useClienteStore();
 const cliente = ref<ICliente>(props.cliente);
-const errors = ref<{ [key: string]: boolean }>({});
 const { state, v$, getCpfCnpjError } = CadastroClienteValidation.setup();
 const salvarCliente = async () => {
     if (validate()) {
