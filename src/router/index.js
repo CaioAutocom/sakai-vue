@@ -15,6 +15,11 @@ const router = createRouter({
             component: () => import('@/views/pages/auth/Login.vue')
         },
         {
+            path: '/empresas',
+            name: 'empresas',
+            component: () => import('@/views/pages/auth/SelecionarEmpresa.vue')
+        },
+        {
             path: '/app',
             component: AppLayout,
             children: [

@@ -48,6 +48,7 @@ declare module 'vue' {
     Rating: typeof import('primevue/rating')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SelecionarEmpresa: typeof import('./src/views/pages/auth/SelecionarEmpresa.vue')['default']
     Select: typeof import('primevue/select')['default']
     SelectButton: typeof import('primevue/selectbutton')['default']
     SplitButton: typeof import('primevue/splitbutton')['default']
