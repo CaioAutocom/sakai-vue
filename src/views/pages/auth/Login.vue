@@ -17,10 +17,18 @@ const onSubmit = async () => {
         if (authStore.isSingleTenant) {
             await authStore.obterToken();
             router.push('/app');
-        } else {
-            router.push('/empresas');
         }
+        loading.value = false;
     }
+
+    if (authStore.selectedTenant) {
+        await authStore.obterToken();
+        router.push('/app');
+    }
+};
+
+const onSelectTenant = (tentant) => {
+    authStore.setSelectedTenant(tentant);
 };
 </script>
 
@@ -40,19 +48,25 @@ const onSubmit = async () => {
                     <div>
                         <form @submit.prevent="onSubmit">
                             <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                            <InputText pt:root:id="email1" type="text" placeholder="Endereço de email" class="w-full md:w-[30rem] mb-8" v-model="authStore.email" />
+                            <InputText pt:root:id="email1" type="text" placeholder="Endereço de email" class="w-full md:w-[30rem] mb-3" v-model="authStore.email" />
 
                             <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Senha</label>
                             <Password pt:pcInput:root:id="password1" v-model="authStore.password" placeholder="Senha" :toggleMask="true" class="mb-4" fluid :feedback="false"></Password>
 
-                            <div class="flex items-center justify-between mt-2 mb-8 gap-8">
-                                <div class="flex items-center">
-                                    <Checkbox v-model="checked" pt:input:id="rememberme1" binary class="mr-2"></Checkbox>
-                                    <label for="rememberme1">Lembre-me</label>
+                            <template v-if="!authStore.isLoggedIn">
+                                <div class="flex items-center justify-between mt-2 mb-8 gap-8">
+                                    <div class="flex items-center">
+                                        <Checkbox v-model="checked" pt:input:id="rememberme1" binary class="mr-2"></Checkbox>
+                                        <label for="rememberme1">Lembre-me</label>
+                                    </div>
+                                    <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Esqueceu a senha?</span>
                                 </div>
-                                <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Esqueceu a senha?</span>
-                            </div>
-                            <Button label="Entrar" class="w-full" type="submit" :loading="loading"></Button>
+                            </template>
+                            <template v-else>
+                                <label for="select1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Selecione a empresa</label>
+                                <Select pt:root:id="select1" v-model="authStore.selectedTenant" :options="authStore.user.tenants" optionLabel="name" placeholder="Empresa" class="mb-8" @change="onSelectTenant(authStore.selectedTenant)" fluid />
+                            </template>
+                            <Button :label="authStore.isLoggedIn ? 'Continuar' : 'Entrar'" class="w-full" type="submit" :loading="loading"></Button>
                         </form>
                     </div>
                 </div>
