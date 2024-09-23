@@ -8,8 +8,7 @@ const authService = container.get<IAuthService>('IAuthService');
 
 export const useAuthStore = defineStore('auth', {
     state: (): IAuthState => ({
-        email: '',
-        password: '',
+        loggedUserEmail: '',
         user: null,
         selectedTenant: null,
         isSingleTenant: false,
@@ -22,9 +21,7 @@ export const useAuthStore = defineStore('auth', {
             try {
                 if (!this.isLoggedIn) {
                     const user = await authService.login(email, password);
-
                     this.user = user;
-                    this.isLoggedIn = true;
                     this.isSingleTenant = user.tenants.length === 1;
                 }
             } catch (error) {
@@ -44,6 +41,13 @@ export const useAuthStore = defineStore('auth', {
 
         setSelectedTenant(tenant: ITenant) {
             this.selectedTenant = tenant;
+        },
+        setIsLoggedIn(emailInput: string) {
+            this.isLoggedIn = true;
+            this.loggedUserEmail = emailInput;
+        },
+        logout() {
+            this.$reset();
         }
     }
 });

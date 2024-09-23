@@ -6,21 +6,32 @@ import { useRouter } from 'vue-router';
 const checked = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
+const userEmail = ref('');
+const password = ref('');
 
 const loading = ref(false);
 
 const onSubmit = async () => {
+    if (authStore.isLoggedIn && userEmail.value != authStore.loggedUserEmail) {
+        authStore.logout();
+        localStorage.removeItem('token');
+        return;
+    }
+
     loading.value = true;
     if (!authStore.isLoggedIn) {
-        await authStore.login(authStore.email, authStore.password);
+        await authStore.login(userEmail.value, password.value);
 
         if (authStore.isSingleTenant) {
             await authStore.obterToken();
             router.push('/app');
         }
+        authStore.setIsLoggedIn(userEmail.value);
         loading.value = false;
+        return;
     }
 
+    authStore.setIsLoggedIn(userEmail.value);
     if (authStore.selectedTenant) {
         await authStore.obterToken();
         router.push('/app');
@@ -48,10 +59,10 @@ const onSelectTenant = (tentant) => {
                     <div>
                         <form @submit.prevent="onSubmit">
                             <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                            <InputText pt:root:id="email1" type="text" placeholder="Endereço de email" class="w-full md:w-[30rem] mb-3" v-model="authStore.email" />
+                            <InputText pt:root:id="email1" type="text" placeholder="Endereço de email" class="w-full md:w-[30rem] mb-3" v-model="userEmail" />
 
                             <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Senha</label>
-                            <Password pt:pcInput:root:id="password1" v-model="authStore.password" placeholder="Senha" :toggleMask="true" class="mb-4" fluid :feedback="false"></Password>
+                            <Password pt:pcInput:root:id="password1" v-model="password" placeholder="Senha" :toggleMask="true" class="mb-4" fluid :feedback="false"></Password>
 
                             <template v-if="!authStore.isLoggedIn">
                                 <div class="flex items-center justify-between mt-2 mb-8 gap-8">
