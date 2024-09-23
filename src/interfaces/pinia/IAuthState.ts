@@ -8,4 +8,5 @@ export interface IAuthState {
     isSingleTenant: boolean;
     isLoggedIn: boolean;
     token: string | null;
+    error: string;
 }

@@ -13,7 +13,8 @@ export const useAuthStore = defineStore('auth', {
         selectedTenant: null,
         isSingleTenant: false,
         isLoggedIn: false,
-        token: ''
+        token: '',
+        error: null
     }),
 
     actions: {

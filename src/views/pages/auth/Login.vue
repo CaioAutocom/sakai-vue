@@ -2,6 +2,10 @@
 import { useAuthStore } from '@/store/authStore.ts';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { container } from '../../../containers';
+
+
+const notificationService = container.get < INotificationService > 'INotificationService';
 
 const checked = ref(false);
 const authStore = useAuthStore();
@@ -12,6 +16,8 @@ const password = ref('');
 const loading = ref(false);
 
 const onSubmit = async () => {
+    notificationService.sucess('eee');
+
     if (authStore.isLoggedIn && userEmail.value != authStore.loggedUserEmail) {
         authStore.logout();
         localStorage.removeItem('token');
