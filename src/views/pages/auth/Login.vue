@@ -3,22 +3,17 @@ import { useAuthStore } from '@/store/authStore.ts';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { container } from '../../../containers';
-
-
-const notificationService = container.get < INotificationService > 'INotificationService';
+const authService = container.get<IAuthService>(TYPES.IAuthService);
 
 const checked = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
 const userEmail = ref('');
 const password = ref('');
-
 const loading = ref(false);
 
 const onSubmit = async () => {
-    notificationService.sucess('eee');
-
-    if (authStore.isLoggedIn && userEmail.value != authStore.loggedUserEmail) {
+       if (authStore.isLoggedIn && userEmail.value != authStore.loggedUserEmail) {
         authStore.logout();
         localStorage.removeItem('token');
         return;
@@ -29,7 +24,7 @@ const onSubmit = async () => {
         await authStore.login(userEmail.value, password.value);
 
         if (authStore.isSingleTenant) {
-            await authStore.obterToken();
+            await authStore.obterToken(userEmail.value, password.value);
             router.push('/app');
         }
         authStore.setIsLoggedIn(userEmail.value);
@@ -39,7 +34,7 @@ const onSubmit = async () => {
 
     authStore.setIsLoggedIn(userEmail.value);
     if (authStore.selectedTenant) {
-        await authStore.obterToken();
+        await authStore.obterToken(userEmail.value, password.value);
         router.push('/app');
     }
 };

@@ -6,6 +6,7 @@ import { IUser } from '../models/IUser';
 
 @injectable()
 export class AuthService implements IAuthService {
+    
     private urlLogin = API_ENDPOINTS.apiUrl + API_ENDPOINTS.login;
     private urlObterToken = API_ENDPOINTS.apiUrl + API_ENDPOINTS.obterToken;
 

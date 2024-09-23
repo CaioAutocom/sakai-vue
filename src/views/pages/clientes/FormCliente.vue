@@ -1,5 +1,5 @@
 <template>
-    <Card class="w-7/12">
+    <Card class="">
         <template #content>
             <div>
                 <form autocomplete="off">
