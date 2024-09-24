@@ -20,7 +20,6 @@ export const useAuthStore = defineStore('auth', {
         async login(email: string, password: string) {
             try {
                 if (!this.isLoggedIn) {
-                   
                     const user = await authService.login(email, password);
                     this.user = user;
                     this.isSingleTenant = user.tenants.length === 1;

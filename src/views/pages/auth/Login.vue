@@ -1,7 +1,9 @@
 <script setup>
+import { useAuthStore } from '@/store/authStore.ts';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../../../store/authStore';
+import { container } from '../../../containers';
+const authService = container.get<IAuthService>(TYPES.IAuthService);
 
 
 const checked = ref(false);
