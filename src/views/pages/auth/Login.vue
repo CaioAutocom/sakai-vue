@@ -1,8 +1,7 @@
 <script setup>
-import { useAuthStore } from '@/store/authStore.ts';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import { useAuthStore } from '../../../store/authStore';
 
 
 const checked = ref(false);

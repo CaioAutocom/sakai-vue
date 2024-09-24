@@ -3,7 +3,7 @@ import { ITenant } from 'models/ITenant';
 import { defineStore } from 'pinia';
 import { AuthService } from '../service/AuthService';
 
-const authService = new AuthService();
+const authService = container.get<IAuthService>(TYPES.IAuthService);
 
 export const useAuthStore = defineStore('auth', {
     state: (): IAuthState => ({
@@ -20,6 +20,7 @@ export const useAuthStore = defineStore('auth', {
         async login(email: string, password: string) {
             try {
                 if (!this.isLoggedIn) {
+                   
                     const user = await authService.login(email, password);
                     this.user = user;
                     this.isSingleTenant = user.tenants.length === 1;
