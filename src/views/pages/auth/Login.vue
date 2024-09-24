@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { NotificationService } from '../../../service/NotificationService';
 import { useAuthStore } from '../../../store/authStore';
 
 const checked = ref(false);
@@ -8,16 +9,22 @@ const authStore = useAuthStore();
 const router = useRouter();
 const userEmail = ref('');
 const password = ref('');
-const loading = ref(false);
+
+const notificationService = new NotificationService();
+
+watch(() => authStore.error, (newError) => {
+            if (newError) {
+                notificationService.error(newError, 'Erro de Login');
+            }
+        });
 
 const onSubmit = async () => {
-       if (authStore.isLoggedIn && userEmail.value != authStore.loggedUserEmail) {
+       if (authStore.isLoggedIn && userEmail.value !== authStore.loggedUserEmail) {
         authStore.logout();
         localStorage.removeItem('token');
         return;
     }
 
-    loading.value = true;
     if (!authStore.isLoggedIn) {
         await authStore.login(userEmail.value, password.value);
 
@@ -25,12 +32,11 @@ const onSubmit = async () => {
             await authStore.obterToken(userEmail.value, password.value);
             router.push('/app');
         }
-        authStore.setIsLoggedIn(userEmail.value);
-        loading.value = false;
+        authStore.setUser(userEmail.value);
         return;
     }
 
-    authStore.setIsLoggedIn(userEmail.value);
+    authStore.setUser(userEmail.value);
     if (authStore.selectedTenant) {
         await authStore.obterToken(userEmail.value, password.value);
         router.push('/app');
@@ -43,6 +49,7 @@ const onSelectTenant = (tentant) => {
 </script>
 
 <template>
+    <Toast />
     <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
         <div class="flex flex-col items-center justify-center">
             <div style="border-radius: 56px; padding: 0.2rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 100%)">
@@ -58,11 +65,11 @@ const onSelectTenant = (tentant) => {
                     <div>
                         <form @submit.prevent="onSubmit">
                             <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                            <InputText pt:root:id="email1" type="text" placeholder="Endereço de email" class="w-full md:w-[30rem] mb-3" v-model="userEmail" />
+                            <InputText pt:root:id="email1" type="text" placeholder="Endereço de email" class="w-full md:w-[30rem] mb-3" v-model="userEmail" :invalid="authStore.wrongUserNameOrPassword" />
 
                             <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Senha</label>
-                            <Password pt:pcInput:root:id="password1" v-model="password" placeholder="Senha" :toggleMask="true" class="mb-4" fluid :feedback="false"></Password>
-
+                            <Password pt:pcInput:root:id="password1" v-model="password" placeholder="Senha" :toggleMask="true" class="mb-4" fluid :feedback="false" :invalid="authStore.wrongUserNameOrPassword"></Password>
+                            <p v-if="authStore.wrongUserNameOrPassword" class="text-red-500">Usuário ou Senha inválidos.</p>
                             <template v-if="!authStore.isLoggedIn">
                                 <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                                     <div class="flex items-center">
@@ -76,7 +83,7 @@ const onSelectTenant = (tentant) => {
                                 <label for="select1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Selecione a empresa</label>
                                 <Select pt:root:id="select1" v-model="authStore.selectedTenant" :options="authStore.user.tenants" optionLabel="name" placeholder="Empresa" class="mb-8" @change="onSelectTenant(authStore.selectedTenant)" fluid />
                             </template>
-                            <Button :label="authStore.isLoggedIn ? 'Continuar' : 'Entrar'" class="w-full" type="submit" :loading="loading"></Button>
+                            <Button :label="authStore.isLoggedIn ? 'Continuar' : 'Entrar'" class="w-full" type="submit" :loading="authStore.loading"></Button>
                         </form>
                     </div>
                 </div>

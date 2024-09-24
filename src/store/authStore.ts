@@ -15,38 +15,56 @@ export const useAuthStore = defineStore('auth', {
         isSingleTenant: false,
         isLoggedIn: false,
         token: null,
-        error: null
+        error: null,
+        loading: false,
+        wrongUserNameOrPassword: false
     }),
 
     actions:{
         async login(email: string, password: string) {
             try {
+                this.loading = true;
+                this.error = null;
+                this.wrongUserNameOrPassword = false;
+
                 if (!this.isLoggedIn) {
                     const user = await authService.login(email, password);
                     this.user = user;
                     this.isSingleTenant = user.tenants.length === 1;
                 }
-            } catch (error) {
-                console.error('Login failed', error);
+            } catch (err) {
+                if(err.status === 401){
+                    this.error = "Usuário ou senha inválidos.";
+                    this.wrongUserNameOrPassword = true;
+                    return;
+                }
+                this.error = err.message;
+            }finally{
+                this.loading = false;
             }
         },
 
         async obterToken(email: string, password: string) {
             try {
+                this.loading = true;
+                this.error = null;
                 let idTenant = this.isSingleTenant ? this.user.tenants[0].id : this.selectedTenant.id;
                 this.token = await authService.obterToken(email, password, idTenant);
                 if (this.token) localStorage.setItem('token', JSON.stringify(this.token));
-            } catch (error) {
-                console.log(error);
+            } catch (err) {
+                this.error = err.message;
+            }finally{
+                this.loading = false;
             }
         },
 
         setSelectedTenant(tenant: ITenant) {
             this.selectedTenant = tenant;
         },
-        setIsLoggedIn(emailInput: string) {
+        setUser(emailInput: string) {
             this.isLoggedIn = true;
             this.loggedUserEmail = emailInput;
+            this.wrongUserNameOrPassword = false;
         },
         logout() {
             this.$reset();

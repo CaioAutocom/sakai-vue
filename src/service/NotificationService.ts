@@ -1,43 +1,45 @@
-import { injectable } from 'inversify';
 import { ToastMessageOptions } from 'primevue/toast';
+import { ToastServiceMethods } from 'primevue/toastservice';
 import { useToast } from 'primevue/usetoast';
 import { INotificationService } from '../interfaces/INotificationService';
 
-@injectable()
-export class NotificationService implements INotificationService {
-    private toast = useToast();
+class NotificationService implements INotificationService {
+    private toast: ToastServiceMethods;
 
-    success(message: string, title = 'Sucesso') {
+    constructor() {
+        this.toast = useToast(); 
+    }
+    success(message: string) {
         this.toast.add({
             severity: 'success',
-            summary: title,
+            summary: 'Sucesso',
             detail: message,
             life: 3000
         });
     }
 
-    error(message: string, title = 'Erro') {
+    error(message: string) {
         this.toast.add({
             severity: 'error',
-            summary: title,
+            summary: 'Erro',
             detail: message,
             life: 3000
         });
     }
 
-    info(message: string, title = 'Informação') {
+    info(message: string) {
         this.toast.add({
             severity: 'info',
-            summary: title,
+            summary: 'Informação',
             detail: message,
             life: 3000
         });
     }
 
-    warn(message: string, title = 'Atenção') {
+    warn(message: string) {
         this.toast.add({
             severity: 'warn',
-            summary: title,
+            summary: 'Atenção',
             detail: message,
             life: 3000
         });
@@ -52,3 +54,6 @@ export class NotificationService implements INotificationService {
         });
     }
 }
+
+export { NotificationService };
+

@@ -68,6 +68,7 @@ const filters = ref({
 
 onMounted(async () => {
     clienteStore.clientes = clienteStore.mockarClientes();
+    toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Cliente excluído com sucesso', life: 8000 });
 });
 const editarCliente = (cliente: ICliente) => {
     // clienteStore.selecionarCliente(cliente);

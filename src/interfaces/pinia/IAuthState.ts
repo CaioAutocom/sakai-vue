@@ -9,4 +9,6 @@ export interface IAuthState {
     isLoggedIn: boolean;
     token: string | null;
     error: string;
+    loading: boolean
+    wrongUserNameOrPassword: boolean
 }

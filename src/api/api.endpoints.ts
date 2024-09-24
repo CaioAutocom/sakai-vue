@@ -1,5 +1,5 @@
 export const API_ENDPOINTS = {
-    apiUrl: 'http://192.168.245.250:5099/api',
+    apiUrl: 'https://api.esistem.com.br:5100/api',
     apiUrlHttps: 'https://192.168.245.250:5100/api',
     // users
     addUser: '/users',
