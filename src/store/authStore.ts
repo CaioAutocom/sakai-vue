@@ -1,11 +1,10 @@
 import { IAuthState } from 'interfaces/pinia/IAuthState';
 import { ITenant } from 'models/ITenant';
 import { defineStore } from 'pinia';
-import { container } from '../containers';
-import { IAuthService } from '../interfaces/IAuthService';
-import { TYPES } from '../types';
+import { AuthService } from '../service/AuthService';
 
 const authService = container.get<IAuthService>(TYPES.IAuthService);
+
 export const useAuthStore = defineStore('auth', {
     state: (): IAuthState => ({
         loggedUserEmail: null,

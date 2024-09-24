@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../../store/authStore';
 
+
 const checked = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
@@ -11,6 +12,7 @@ const password = ref('');
 const loading = ref(false);
 
 const onSubmit = async () => {
+
        if (authStore.isLoggedIn && userEmail.value != authStore.loggedUserEmail) {
         authStore.logout();
         localStorage.removeItem('token');
