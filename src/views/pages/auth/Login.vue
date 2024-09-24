@@ -14,7 +14,6 @@ const password = ref('');
 const loading = ref(false);
 
 const onSubmit = async () => {
-
        if (authStore.isLoggedIn && userEmail.value != authStore.loggedUserEmail) {
         authStore.logout();
         localStorage.removeItem('token');

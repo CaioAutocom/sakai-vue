@@ -4,6 +4,7 @@
     "compilerOptions": {
         "target": "ES2020",
         "lib": ["ES2015", "DOM"],
+        "types": ["reflect-metadata"],
         "module": "commonjs",
         "moduleResolution": "node",
         "experimentalDecorators": true,

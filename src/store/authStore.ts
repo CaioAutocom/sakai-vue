@@ -1,7 +1,9 @@
 import { IAuthState } from 'interfaces/pinia/IAuthState';
 import { ITenant } from 'models/ITenant';
 import { defineStore } from 'pinia';
-import { AuthService } from '../service/AuthService';
+import { container } from '../containers';
+import { IAuthService } from '../interfaces/IAuthService';
+import { TYPES } from '../types';
 
 const authService = container.get<IAuthService>(TYPES.IAuthService);
 
