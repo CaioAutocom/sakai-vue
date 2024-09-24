@@ -2,8 +2,8 @@
 import { useAuthStore } from '@/store/authStore.ts';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { container } from '../../../containers';
-const authService = container.get<IAuthService>(TYPES.IAuthService);
+
+
 
 const checked = ref(false);
 const authStore = useAuthStore();
@@ -13,6 +13,7 @@ const password = ref('');
 const loading = ref(false);
 
 const onSubmit = async () => {
+
        if (authStore.isLoggedIn && userEmail.value != authStore.loggedUserEmail) {
         authStore.logout();
         localStorage.removeItem('token');

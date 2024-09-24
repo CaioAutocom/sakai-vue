@@ -1,9 +1,7 @@
-import { injectable } from 'inversify';
 import { ToastMessageOptions } from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import { INotificationService } from '../interfaces/INotificationService';
 
-@injectable()
 export class NotificationService implements INotificationService {
     private toast = useToast();
 

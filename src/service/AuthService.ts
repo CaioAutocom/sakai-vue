@@ -1,10 +1,8 @@
 import axios from 'axios';
-import { injectable } from 'inversify';
 import { API_ENDPOINTS } from '../api/api.endpoints';
 import { IAuthService } from '../interfaces/IAuthService';
 import { IUser } from '../models/IUser';
 
-@injectable()
 export class AuthService implements IAuthService {
     
     private urlLogin = API_ENDPOINTS.apiUrl + API_ENDPOINTS.login;
