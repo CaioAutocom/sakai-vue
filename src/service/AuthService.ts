@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { injectable } from 'inversify';
+import { IToken } from 'models/IToken';
 import { API_ENDPOINTS } from '../api/api.endpoints';
 import { IAuthService } from '../interfaces/IAuthService';
 import { IUser } from '../models/IUser';
 
 @injectable()
 export class AuthService implements IAuthService {
-    
     private urlLogin = API_ENDPOINTS.apiUrl + API_ENDPOINTS.login;
     private urlObterToken = API_ENDPOINTS.apiUrl + API_ENDPOINTS.obterToken;
 
@@ -16,8 +16,8 @@ export class AuthService implements IAuthService {
         return response.data;
     }
 
-    async obterToken(email: string, password: string, tenantId: string): Promise<any> {
-        const response = await axios.post<any>(this.urlObterToken, { email, password, tenantId });
+    async obterToken(email: string, password: string, tenantId: string): Promise<IToken> {
+        const response = await axios.post<IToken>(this.urlObterToken, { email, password, tenantId });
         console.log(response.data);
         return response.data;
     }

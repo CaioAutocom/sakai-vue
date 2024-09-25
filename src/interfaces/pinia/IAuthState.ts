@@ -1,4 +1,5 @@
 import { ITenant } from 'models/ITenant';
+import { IToken } from 'models/IToken';
 import { IUser } from 'models/IUser';
 
 export interface IAuthState {
@@ -7,7 +8,7 @@ export interface IAuthState {
     selectedTenant: ITenant | null;
     isSingleTenant: boolean;
     isLoggedIn: boolean;
-    token: string | null;
+    token: IToken | null;
     error: string;
     loading: boolean;
     wrongUserNameOrPassword: boolean;

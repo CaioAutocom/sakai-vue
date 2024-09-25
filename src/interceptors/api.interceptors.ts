@@ -1,10 +1,31 @@
 import axios from 'axios';
+import { IToken } from 'models/IToken';
 import { API_ENDPOINTS } from '../api/api.endpoints';
+import { container } from '../containers';
+import { ILocalStorageService } from '../interfaces/ILocalStorageService';
+import { TYPES } from '../types';
+
+const storageService = container.get<ILocalStorageService>(TYPES.ILocalStorageService);
 
 export default function setupApi() {
     const api = axios.create({
         baseURL: API_ENDPOINTS.apiUrl
     });
+
+    api.interceptors.request.use(
+        (config) => {
+            let token: IToken;
+            token = JSON.parse(storageService.getItem('token', false)) ?? JSON.parse(storageService.getItem('token', true));
+
+            if (token) {
+                config.headers['Authorization'] = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        }
+    );
 
     api.interceptors.response.use(
         (response) => {
