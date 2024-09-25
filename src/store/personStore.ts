@@ -1,49 +1,56 @@
 import { defineStore } from 'pinia';
+import { container } from '../containers';
+import { IPersonService } from '../interfaces/IPersonService';
+import { IPersonState } from '../interfaces/pinia/IPersonState';
 import { IPerson } from '../models/IPerson';
+import { TYPES } from '../types';
 
-export const usePessoaStore = defineStore('pessoa', {
-    state: () => ({
-        pessoas: null,
-        pessoaSelecionada: null,
-        pessoasSelecionadas: null,
-        formVisible: null
+const personService = container.get<IPersonService>(TYPES.IPersonService);
+
+export const usePersonStore = defineStore('pessoa', {
+    state: (): IPersonState => ({
+        persons: null as IPerson[],
+        selectedPerson: null,
+        formVisible: false,
+        error: null,
+        getAllPersonsResponse: null
     }),
 
     actions: {
-        async carregarClientes(): Promise<void> {
+        async getAll(): Promise<void> {
             try {
-                const response = await this.clienteService.getClientes();
-                this.clientes = response.data;
+                const response = await personService.getAll();
+                this.getAllPersonsResponse = response;
             } catch (error) {
-                console.error('Erro ao carregar clientes:', error);
+                this.error = error;
             }
         },
 
         async cadastrarCliente(cliente: IPerson) {
-            try {
-                await this.clienteService.createCliente(cliente);
-                await this.carregarClientes();
-            } catch (error) {
-                console.error('Erro ao cadastrar cliente:', error);
-            }
+            // try {
+            //     await this.clienteService.createCliente(cliente);
+            //     await this.carregarClientes();
+            // } catch (error) {
+            //     console.error('Erro ao cadastrar cliente:', error);
+            // }
         },
 
         async atualizarCliente(cliente: IPerson) {
-            try {
-                await this.clienteService.updateCliente(cliente);
-                await this.carregarClientes();
-            } catch (error) {
-                console.error('Erro ao atualizar cliente:', error);
-            }
+            // try {
+            //     await this.clienteService.updateCliente(cliente);
+            //     await this.carregarClientes();
+            // } catch (error) {
+            //     console.error('Erro ao atualizar cliente:', error);
+            // }
         },
 
         async excluirCliente(clienteId: string) {
-            try {
-                await this.clienteService.deleteCliente(clienteId);
-                await this.carregarClientes();
-            } catch (error) {
-                console.error('Erro ao excluir cliente:', error);
-            }
+            // try {
+            //     await this.clienteService.deleteCliente(clienteId);
+            //     await this.carregarClientes();
+            // } catch (error) {
+            //     console.error('Erro ao excluir cliente:', error);
+            // }
         },
 
         selecionarCliente(cliente: IPerson) {

@@ -1,3 +1,53 @@
+<script setup lang="ts">
+import { useConfirm } from 'primevue/useconfirm';
+import { usePersonStore } from '../../../store/personStore';
+import CadastroClienteValidation from '../../../validations/CadastroClienteValidation';
+
+const confirmPopup = useConfirm();
+
+function confirm(event) {
+    confirmPopup.require({
+        target: event.target,
+        message: 'Deseja cancelar o cadastro de cliente?',
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: 'Não',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Sim'
+        },
+        accept: () => {
+            cancelarForm();
+        }
+    });
+}
+
+const pessoaStore = usePersonStore();
+
+const { state, v$, getCpfCnpjError } = CadastroClienteValidation.setup();
+const salvarCliente = async () => {
+    // if (validate()) {
+    //     try {
+    //         if (cliente.value.idAlternativo) {
+    //             // await clienteStore.atualizarCliente(cliente.value);
+    //         } else {
+    //             // await clienteStore.cadastrarCliente(cliente.value);
+    //         }
+    //         emit('save');
+    //         toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Cliente salvo com sucesso', life: 3000 });
+    //     } catch (error) {
+    //         toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao salvar cliente', life: 3000 });
+    //     }
+    // }
+};
+
+function cancelarForm() {
+    pessoaStore.hideForm();
+}
+</script>
+
 <template>
     <Card class="">
         <template #content>
@@ -100,75 +150,5 @@
         </template>
     </Card>
 </template>
-
-<script setup lang="ts">
-import { IPerson } from 'models/IPerson';
-import { useConfirm } from 'primevue/useconfirm';
-import { useToast } from 'primevue/usetoast';
-import { ref, watch } from 'vue';
-import { usePessoaStore } from '../../../store/pessoaStore';
-import CadastroClienteValidation from '../../../validations/CadastroClienteValidation';
-
-const props = defineProps<{
-    visible: boolean;
-    cliente: IPerson | null;
-}>();
-const confirmPopup = useConfirm();
-
-function confirm(event) {
-    confirmPopup.require({
-        target: event.target,
-        message: 'Deseja cancelar o cadastro de cliente?',
-        icon: 'pi pi-exclamation-triangle',
-        rejectProps: {
-            label: 'Não',
-            severity: 'secondary',
-            outlined: true
-        },
-        acceptProps: {
-            label: 'Sim'
-        },
-        accept: () => {
-            cancelarForm();
-        }
-    });
-}
-const emit = defineEmits(['save', 'formVisible']);
-const toast = useToast();
-const pessoaStore = usePessoaStore();
-const cliente = ref<IPerson>(props.cliente);
-const { state, v$, getCpfCnpjError } = CadastroClienteValidation.setup();
-const salvarCliente = async () => {
-    if (validate()) {
-        try {
-            if (cliente.value.idAlternativo) {
-                // await clienteStore.atualizarCliente(cliente.value);
-            } else {
-                // await clienteStore.cadastrarCliente(cliente.value);
-            }
-            emit('save');
-            toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Cliente salvo com sucesso', life: 3000 });
-        } catch (error) {
-            toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao salvar cliente', life: 3000 });
-        }
-    }
-};
-
-function cancelarForm() {
-    pessoaStore.hideForm();
-}
-
-const validate = () => {
-    // Implementar validação aqui
-    return true;
-};
-
-watch(
-    () => props.cliente,
-    (newCliente) => {
-        cliente.value = newCliente ? { ...newCliente } : null;
-    }
-);
-</script>
 
 <style scoped></style>

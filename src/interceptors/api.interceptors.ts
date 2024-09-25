@@ -1,11 +1,6 @@
 import axios from 'axios';
 import { IToken } from 'models/IToken';
 import { API_ENDPOINTS } from '../api/api.endpoints';
-import { container } from '../containers';
-import { ILocalStorageService } from '../interfaces/ILocalStorageService';
-import { TYPES } from '../types';
-
-const storageService = container.get<ILocalStorageService>(TYPES.ILocalStorageService);
 
 export default function setupApi() {
     const api = axios.create({
@@ -15,10 +10,10 @@ export default function setupApi() {
     api.interceptors.request.use(
         (config) => {
             let token: IToken;
-            token = JSON.parse(storageService.getItem('token', false)) ?? JSON.parse(storageService.getItem('token', true));
+            token = JSON.parse(localStorage.getItem('token')) ?? JSON.parse(sessionStorage.getItem('token'));
 
             if (token) {
-                config.headers['Authorization'] = `Bearer ${token}`;
+                config.headers['Authorization'] = `Bearer ${token.token}`;
             }
             return config;
         },

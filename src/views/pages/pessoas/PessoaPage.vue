@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { usePessoaStore } from '../../../store/pessoaStore';
+
+import { usePersonStore } from '../../../store/personStore';
 import ListPessoas from './ListPessoas.vue';
 
-const pessoaStore = usePessoaStore();
+const pessoaStore = usePersonStore();
 
 onMounted(() => {
-    pessoaStore.pessoas = pessoaStore.mockarClientes();
+    pessoaStore.getAll();
 });
 
 const openForm = () => {
@@ -17,7 +18,7 @@ const openForm = () => {
 <template>
     <div>
         <div class="card">
-            <div class="font-semibold text-xl">Clientes</div>
+            <div class="font-semibold text-xl">Pessoas</div>
             <Toolbar>
                 <template #start>
                     <Button label="Novo" icon="pi pi-plus" severity="secondary" @click="openForm" />

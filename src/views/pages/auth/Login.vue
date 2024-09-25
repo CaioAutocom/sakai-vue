@@ -41,7 +41,9 @@ const onSubmit = async () => {
             await authStore.obterToken(userEmail.value, password.value);
             router.push('/app');
         }
-    } catch (error) {}
+    } catch (error) {
+        return;
+    }
 };
 
 const onSelectTenant = (tenant) => {

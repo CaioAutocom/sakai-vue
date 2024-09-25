@@ -3,7 +3,8 @@ const TYPES = {
     IClienteService: Symbol('IClienteService'),
     IAuthService: Symbol('IAuthService'),
     INotificationService: Symbol('INotificationService'),
-    ILocalStorageService: Symbol('ILocalStorageService')
+    ILocalStorageService: Symbol('ILocalStorageService'),
+    IPersonService: Symbol('IPersonService')
 };
 
 export { TYPES };

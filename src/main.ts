@@ -1,5 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
+// para uso do inversify
+import 'reflect-metadata';
 import router from './router';
 
 import Aura from '@primevue/themes/aura';
@@ -10,8 +12,6 @@ import ToastService from 'primevue/toastservice';
 
 import '@/assets/styles.scss';
 import '@/assets/tailwind.css';
-// para uso do inversify
-import 'reflect-metadata';
 
 const app = createApp(App);
 const pinia = createPinia();
