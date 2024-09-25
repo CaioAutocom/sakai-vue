@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 import { NotificationService } from '../../../service/NotificationService';
 import { useAuthStore } from '../../../store/authStore';
 
-const checked = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
 const userEmail = ref('');
@@ -12,35 +11,40 @@ const password = ref('');
 
 const notificationService = new NotificationService();
 
-watch(() => authStore.error, (newError) => {
-            if (newError) {
-                notificationService.error(newError, 'Erro de Login');
-            }
-        });
+watch(
+    () => authStore.error,
+    (newError) => {
+        if (newError) {
+            notificationService.error(newError, 'Erro de Login');
+        }
+    }
+);
 
 const onSubmit = async () => {
-       if (authStore.isLoggedIn && userEmail.value !== authStore.loggedUserEmail) {
-        authStore.logout();
-        localStorage.removeItem('token');
-        return;
-    }
+    try {
+        if (authStore.isLoggedIn && userEmail.value !== authStore.loggedUserEmail) {
+            authStore.logout();
 
-    if (!authStore.isLoggedIn) {
-        await authStore.login(userEmail.value, password.value);
+            return;
+        }
 
-        if (authStore.isSingleTenant) {
+        if (!authStore.isLoggedIn) {
+            await authStore.login(userEmail.value, password.value);
+
+            if (authStore.isSingleTenant) {
+                await authStore.obterToken(userEmail.value, password.value);
+                router.push('/app');
+            }
+            authStore.setUser(userEmail.value);
+            return;
+        }
+
+        authStore.setUser(userEmail.value);
+        if (authStore.selectedTenant) {
             await authStore.obterToken(userEmail.value, password.value);
             router.push('/app');
         }
-        authStore.setUser(userEmail.value);
-        return;
-    }
-
-    authStore.setUser(userEmail.value);
-    if (authStore.selectedTenant) {
-        await authStore.obterToken(userEmail.value, password.value);
-        router.push('/app');
-    }
+    } catch {}
 };
 
 const onSelectTenant = (tentant) => {
@@ -73,7 +77,7 @@ const onSelectTenant = (tentant) => {
                             <template v-if="!authStore.isLoggedIn">
                                 <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                                     <div class="flex items-center">
-                                        <Checkbox v-model="checked" pt:input:id="rememberme1" binary class="mr-2"></Checkbox>
+                                        <Checkbox v-model="authStore.rememberMe" pt:input:id="rememberme1" binary class="mr-2"></Checkbox>
                                         <label for="rememberme1">Lembre-me</label>
                                     </div>
                                     <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Esqueceu a senha?</span>
