@@ -2,8 +2,8 @@
     <div>
         <DataTable
             ref="dt"
-            v-model:selection="clienteStore.clientesSelecionados"
-            :value="clienteStore.clientes"
+            v-model:selection="pessoaStore.pessoasSelecionadas"
+            :value="pessoaStore.pessoas"
             dataKey="id"
             :paginator="true"
             :rows="10"
@@ -53,24 +53,24 @@
 
 <script setup lang="ts">
 import { FilterMatchMode } from '@primevue/core/api';
-import { ICliente } from 'models/ICliente';
+import { IPerson } from 'models/IPerson';
 import { useToast } from 'primevue/usetoast';
-import { useClienteStore } from '../../../store/clienteStore';
+import { usePessoaStore } from '../../../store/pessoaStore';
 import { onMounted, ref } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
 
 const confirmPopup = useConfirm();
-const clienteStore = useClienteStore();
+const pessoaStore = usePessoaStore();
 const toast = useToast();
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
 onMounted(async () => {
-    clienteStore.clientes = clienteStore.mockarClientes();
+    pessoaStore.pessoas = pessoaStore.mockarClientes();
     toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Cliente excluído com sucesso', life: 8000 });
 });
-const editarCliente = (cliente: ICliente) => {
+const editarCliente = (cliente: IPerson) => {
     // clienteStore.selecionarCliente(cliente);
 };
 const excluirCliente = async (clienteId: string) => {

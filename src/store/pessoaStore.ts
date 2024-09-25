@@ -1,15 +1,12 @@
-import { ICliente } from 'models/ICliente';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
-// import { container } from '../containers';
+import { IPerson } from '../models/IPerson';
 
-export const useClienteStore = defineStore('cliente', {
+export const usePessoaStore = defineStore('pessoa', {
     state: () => ({
-        clientes: ref<ICliente[]>([]),
-        clienteSelecionado: null as ICliente | null,
-        clientesSelecionados: ref<ICliente[]>([]),
-        formVisible: ref(false)
-        // clienteService: container.get<IClienteService>('IClienteService')
+        pessoas: null,
+        pessoaSelecionada: null,
+        pessoasSelecionadas: null,
+        formVisible: null
     }),
 
     actions: {
@@ -22,7 +19,7 @@ export const useClienteStore = defineStore('cliente', {
             }
         },
 
-        async cadastrarCliente(cliente: ICliente) {
+        async cadastrarCliente(cliente: IPerson) {
             try {
                 await this.clienteService.createCliente(cliente);
                 await this.carregarClientes();
@@ -31,7 +28,7 @@ export const useClienteStore = defineStore('cliente', {
             }
         },
 
-        async atualizarCliente(cliente: ICliente) {
+        async atualizarCliente(cliente: IPerson) {
             try {
                 await this.clienteService.updateCliente(cliente);
                 await this.carregarClientes();
@@ -49,7 +46,7 @@ export const useClienteStore = defineStore('cliente', {
             }
         },
 
-        selecionarCliente(cliente: ICliente) {
+        selecionarCliente(cliente: IPerson) {
             this.clienteSelecionado = cliente;
         },
         showForm() {
@@ -59,7 +56,7 @@ export const useClienteStore = defineStore('cliente', {
             this.formVisible = false;
         },
 
-        mockarClientes(): ICliente[] {
+        mockarClientes(): IPerson[] {
             return [
                 {
                     idAlternativo: '1',

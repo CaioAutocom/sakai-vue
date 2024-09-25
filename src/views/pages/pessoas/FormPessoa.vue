@@ -102,16 +102,16 @@
 </template>
 
 <script setup lang="ts">
-import { ICliente } from 'models/ICliente';
+import { IPerson } from 'models/IPerson';
 import { useConfirm } from 'primevue/useconfirm';
 import { useToast } from 'primevue/usetoast';
 import { ref, watch } from 'vue';
-import { useClienteStore } from '../../../store/clienteStore';
+import { usePessoaStore } from '../../../store/pessoaStore';
 import CadastroClienteValidation from '../../../validations/CadastroClienteValidation';
 
 const props = defineProps<{
     visible: boolean;
-    cliente: ICliente | null;
+    cliente: IPerson | null;
 }>();
 const confirmPopup = useConfirm();
 
@@ -135,8 +135,8 @@ function confirm(event) {
 }
 const emit = defineEmits(['save', 'formVisible']);
 const toast = useToast();
-const clienteStore = useClienteStore();
-const cliente = ref<ICliente>(props.cliente);
+const pessoaStore = usePessoaStore();
+const cliente = ref<IPerson>(props.cliente);
 const { state, v$, getCpfCnpjError } = CadastroClienteValidation.setup();
 const salvarCliente = async () => {
     if (validate()) {
@@ -155,7 +155,7 @@ const salvarCliente = async () => {
 };
 
 function cancelarForm() {
-    clienteStore.hideForm();
+    pessoaStore.hideForm();
 }
 
 const validate = () => {

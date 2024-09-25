@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useClienteStore } from '../../../store/clienteStore';
+import { usePessoaStore } from '../../../store/pessoaStore';
+import ListPessoas from './ListPessoas.vue';
 
-const clienteStore = useClienteStore();
+const pessoaStore = usePessoaStore();
 
 onMounted(() => {
-    clienteStore.clientes = clienteStore.mockarClientes();
+    pessoaStore.pessoas = pessoaStore.mockarClientes();
 });
 
 const openForm = () => {
-    clienteStore.showForm();
+    pessoaStore.showForm();
 };
 </script>
 
@@ -27,11 +28,11 @@ const openForm = () => {
                 </template>
             </Toolbar>
         </div>
-        <template v-if="clienteStore.formVisible">
-            <FormCliente />
+        <template v-if="pessoaStore.formVisible">
+            <FormPessoa />
         </template>
         <template v-else>
-            <ListaClientes />
+            <ListPessoas />
         </template>
 
         <!--  -->

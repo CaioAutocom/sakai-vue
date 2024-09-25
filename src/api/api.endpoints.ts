@@ -16,5 +16,10 @@ export const API_ENDPOINTS = {
     // tenants
     // persons
     personCreate: '/person/create',
-    personListAll: '/person/list-all'
+    personId: '/person/id:',
+    personName: '/person/name:',
+    personCpfCnpj: '/person/cpfCnpj:',
+    personListAll: '/person/list-all',
+    personUpdate: '/person/update',
+    personDelete: '/person/delete'
 };

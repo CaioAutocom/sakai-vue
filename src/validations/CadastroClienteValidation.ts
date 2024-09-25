@@ -2,7 +2,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { email, helpers, maxLength, minLength, numeric, required } from '@vuelidate/validators';
 import { cnpj, cpf } from 'cpf-cnpj-validator';
 import { reactive } from 'vue';
-import { ICliente } from '../models/ICliente';
+import { IPerson } from '../models/IPerson';
 
 const isCpfCnpjValid = (value: string) => {
     const cleanedValue = value.replace(/\D/g, '');
@@ -16,7 +16,7 @@ const isCpfCnpjValid = (value: string) => {
 
 export default {
     setup() {
-        const state = reactive<ICliente>({
+        const state = reactive<IPerson>({
             idAlternativo: '',
             nome: '',
             apelido: '',

@@ -1,4 +1,4 @@
-export interface ICliente {
+export interface IPerson {
     idAlternativo: string | '';
     nome: string | '';
     apelido: string | '';

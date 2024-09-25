@@ -1,5 +1,5 @@
 import AppLayout from '@/layout/AppLayout.vue';
-import Clientes from '@/views/pages/clientes/clientesPage.vue';
+import PessoaPage from '@/views/pages/pessoas/PessoaPage.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -21,7 +21,7 @@ const router = createRouter({
                 {
                     path: 'pessoas',
                     name: 'pessoas',
-                    component: Clientes
+                    component: PessoaPage
                 }
             ]
         }
