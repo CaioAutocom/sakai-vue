@@ -24,7 +24,6 @@ const onSubmit = async () => {
     try {
         if (authStore.isLoggedIn && userEmail.value !== authStore.loggedUserEmail) {
             authStore.logout();
-
             return;
         }
 
@@ -35,20 +34,18 @@ const onSubmit = async () => {
                 await authStore.obterToken(userEmail.value, password.value);
                 router.push('/app');
             }
-            authStore.setUser(userEmail.value);
             return;
         }
 
-        authStore.setUser(userEmail.value);
         if (authStore.selectedTenant) {
             await authStore.obterToken(userEmail.value, password.value);
             router.push('/app');
         }
-    } catch {}
+    } catch (error) {}
 };
 
-const onSelectTenant = (tentant) => {
-    authStore.setSelectedTenant(tentant);
+const onSelectTenant = (tenant) => {
+    authStore.setSelectedTenant(tenant);
 };
 </script>
 
@@ -85,7 +82,7 @@ const onSelectTenant = (tentant) => {
                             </template>
                             <template v-else>
                                 <label for="select1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Selecione a empresa</label>
-                                <Select pt:root:id="select1" v-model="authStore.selectedTenant" :options="authStore.user.tenants" optionLabel="name" placeholder="Empresa" class="mb-8" @change="onSelectTenant(authStore.selectedTenant)" fluid />
+                                <Select pt:root:id="select1" v-model="authStore.selectedTenant" :options="authStore.user?.tenants" optionLabel="name" placeholder="Empresa" class="mb-8" @change="onSelectTenant(authStore.selectedTenant)" fluid />
                             </template>
                             <Button :label="authStore.isLoggedIn ? 'Continuar' : 'Entrar'" class="w-full" type="submit" :loading="authStore.loading"></Button>
                         </form>

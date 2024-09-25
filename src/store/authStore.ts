@@ -1,5 +1,6 @@
 import { IAuthState } from 'interfaces/pinia/IAuthState';
 import { ITenant } from 'models/ITenant';
+import { IUser } from 'models/IUser';
 import { defineStore } from 'pinia';
 import { container } from '../containers';
 import { IAuthService } from '../interfaces/IAuthService';
@@ -29,19 +30,19 @@ export const useAuthStore = defineStore('auth', {
                 this.loading = true;
                 this.error = null;
                 this.wrongUserNameOrPassword = false;
+                this.isLoggedIn = false;
 
                 if (!this.isLoggedIn) {
                     const user = await authService.login(email, password);
-                    this.user = user;
-                    this.isSingleTenant = user.tenants.length === 1;
+                    if (user) this.setUser(email, user);
                 }
             } catch (err) {
                 if (err.status === 401) {
                     this.error = 'Usuário ou senha inválidos.';
                     this.wrongUserNameOrPassword = true;
-                    return;
                 }
                 this.error = err.message;
+                throw err;
             } finally {
                 this.loading = false;
             }
@@ -59,6 +60,7 @@ export const useAuthStore = defineStore('auth', {
                 }
             } catch (err) {
                 this.error = err.message;
+                throw err;
             } finally {
                 this.loading = false;
             }
@@ -67,11 +69,15 @@ export const useAuthStore = defineStore('auth', {
         setSelectedTenant(tenant: ITenant) {
             this.selectedTenant = tenant;
         },
-        setUser(emailInput: string) {
+
+        setUser(emailInput: string, user: IUser) {
+            this.user = user;
             this.isLoggedIn = true;
             this.loggedUserEmail = emailInput;
             this.wrongUserNameOrPassword = false;
+            this.isSingleTenant = user.tenants.length === 1;
         },
+
         logout() {
             this.$reset();
             storageService.removeItem('token', true);
