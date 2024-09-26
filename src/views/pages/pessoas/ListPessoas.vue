@@ -1,46 +1,50 @@
-<script setup lang="ts">
-import { FilterMatchMode } from '@primevue/core/api';
+<script setup>
+import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { onMounted, ref } from 'vue';
 import { usePersonStore } from '../../../store/personStore';
 
+const filters = ref();
 const personStore = usePersonStore();
-const filters = ref({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-});
 
 onMounted(async () => {
-    if (personStore.persons === null) {
-        personStore.getAll();
-    }
+    await personStore.getAll();
 });
 
-// const excluirCliente = async (clienteId: string) => {
-//     try {
-//         // await clienteStore.excluirCliente(clienteId);
-//         toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Cliente excluído com sucesso', life: 3000 });
-//     } catch (error) {
-//         toast.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao excluir cliente', life: 3000 });
-//     }
-// };
+const initFilters = () => {
+    filters.value = {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        nome: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        apelido: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        cpfCnpj: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        identidade: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        status: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] }
+    };
+};
+
+initFilters();
+
+const clearFilter = () => {
+    initFilters();
+};
 </script>
 
 <template>
-    <div>
+    <div class="card">
         <DataTable
-            ref="dt"
-            v-model:selection="personStore"
-            :value="personStore.getAllPersonsResponse?.items"
+            v-model:filters="filters"
+            v-model:selection="personStore.selectedPersons"
+            :value="personStore.personsResponse?.items ?? []"
+            stripedRows
+            showGridlines
+            paginator
+            :rows="personStore.personsResponse.totalItems"
             dataKey="id"
-            :paginator="true"
-            :rows="personStore.getAllPersonsResponse?.items?.length ?? 0"
-            :filters="filters"
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            :rowsPerPageOptions="[5, 10, 25]"
-            currentPageReportTemplate="Exibindo {first} - {last} de {totalRecords} clientes."
+            filterDisplay="menu"
+            :globalFilterFields="['nome', 'apelido', 'cpfcnpj', 'identidade', 'ativo']"
         >
             <template #header>
-                <div class="flex flex-wrap gap-2 items-center justify-between">
-                    <h4 class="m-0">Gerenciar Clientes</h4>
+                <div class="flex justify-between">
+                    <Button type="button" icon="pi pi-filter-slash" label="Limpar Filtros" outlined @click="clearFilter()" />
                     <IconField>
                         <InputIcon>
                             <i class="pi pi-search" />
@@ -49,30 +53,48 @@ onMounted(async () => {
                     </IconField>
                 </div>
             </template>
-
-            <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
-            <!-- <Column field="idAlternativo" header="Cod. Alt" sortable style="min-width: 8rem"></Column> -->
-            <Column field="nome" header="Nome" sortable style="min-width: 16rem"></Column>
-            <Column field="apelido" header="Apelido" sortable style="min-width: 16rem"></Column>
-            <Column field="cpfCnpj" header="CPF/CNPJ" sortable style="min-width: 12rem"></Column>
-            <Column field="identidade" header="Identidade" sortable style="min-width: 10rem"></Column>
-            <!-- <Column field="identidadeEmissor" header="Identidade Emissor" sortable style="min-width: 12rem"></Column>
-            <Column field="inscricaoEstadual" header="IE" sortable style="min-width: 10rem"></Column>
-            <Column field="inscricaoMunicipal" header="IM" sortable style="min-width: 10rem"></Column>
-            <Column field="inscricaoProdutorRural" header="Inscrição Prod. Rural" sortable style="min-width: 13rem"></Column> -->
-            <!-- <Column field="inscricaoSuFrama" header="Inscrição SuFrama" sortable style="min-width: 13rem"></Column>
-            <Column field="nascimento" header="Nascimento" sortable style="min-width: 16rem"></Column>
-            <Column field="fundacao" header="Fundação" sortable style="min-width: 16rem"></Column>
-            <Column field="site" header="Site" sortable style="min-width: 16rem"></Column>
-            <Column field="observacao" header="Observação" sortable style="min-width: 16rem"></Column> -->
-            <Column field="ativo" header="Ativo" sortable style="min-width: 6rem"></Column>
-
-            <Column :exportable="false" style="min-width: 12rem">
-                <Button icon="pi pi-pencil" outlined rounded class="mr-2" />
-                <Button icon="pi pi-trash" outlined rounded severity="danger" />
+            <template #empty> No customers found. </template>
+            <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+            <Column field="nome" header="Name" sortable style="min-width: 14rem">
+                <template #body="{ data }">
+                    {{ data.nome }}
+                </template>
+                <template #filter="{ filterModel }">
+                    <InputText v-model="filterModel.value" type="text" placeholder="Procurar por nome" />
+                </template>
+            </Column>
+            <Column field="apelido" header="Apelido" sortable style="min-width: 14rem">
+                <template #body="{ data }">
+                    {{ data.apelido }}
+                </template>
+                <template #filter="{ filterModel }">
+                    <InputText v-model="filterModel.value" type="text" placeholder="Procurar por apelido" />
+                </template>
+            </Column>
+            <Column field="cpfCnpj" header="CPF/CNPJ" sortable style="min-width: 14rem">
+                <template #body="{ data }">
+                    {{ data.cpfCnpj }}
+                </template>
+                <template #filter="{ filterModel }">
+                    <InputText v-model="filterModel.value" type="text" placeholder="Procurar por CPF/CNPJ" />
+                </template>
+            </Column>
+            <Column field="identidade" header="Identidade" sortable style="min-width: 14rem">
+                <template #body="{ data }">
+                    {{ data.identidade }}
+                </template>
+                <template #filter="{ filterModel }">
+                    <InputText v-model="filterModel.value" type="text" placeholder="Procurar por identidade" />
+                </template>
+            </Column>
+            <Column field="ativo" header="ativo" sortable style="max-width: 5rem">
+                <template #body="{ data }">
+                    <Checkbox v-model="data.ativo" :binary="true" :readonly="true" />
+                </template>
+                <template #filter="{ filterModel }">
+                    <InputText v-model="filterModel.value" type="text" />
+                </template>
             </Column>
         </DataTable>
     </div>
 </template>
-
-<style scoped></style>
