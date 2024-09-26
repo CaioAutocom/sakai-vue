@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { IGetAllPersonResponse } from 'models/responses/IGetAllPersonResponse';
+import { IGetAllPersonRequest, IGetAllPersonResponse } from 'models/responses/IGetAllPersonResponse';
 import { API_ENDPOINTS } from '../api/api.endpoints';
 import setupApi from '../interceptors/api.interceptors';
 import { IPersonService } from '../interfaces/IPersonService';
@@ -20,9 +20,17 @@ export class PersonService implements IPersonService {
     async getByCpfCnpj(cpfCnpj: string): Promise<IPerson[]> {
         throw new Error('Method not implemented.');
     }
-    async getAll(): Promise<IGetAllPersonResponse> {
+    async getAll(request: IGetAllPersonRequest): Promise<IGetAllPersonResponse> {
+        const { pageNumber, pageSize, searchTerm, sortColumn, reverseOrder } = request;
         let baseUrl: string = this.apiUrl + API_ENDPOINTS.personListAll;
-        const response = await api.get<IGetAllPersonResponse>(baseUrl);
+        const params = new URLSearchParams();
+
+        if (pageSize) params.append('pagesize', pageSize.toString());
+        if (pageNumber) params.append('pagenumber', pageNumber.toString());
+        if (sortColumn) params.append('SortColumn', sortColumn);
+        if (searchTerm) params.append('searchterm', searchTerm);
+
+        const response = await api.get<IGetAllPersonResponse>(`${baseUrl}?${params.toString()}`);
         return response.data;
     }
     async update(person: IPerson): Promise<void> {

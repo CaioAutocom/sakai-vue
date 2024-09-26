@@ -1,5 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
+import { IGetAllPersonRequest } from 'models/responses/IGetAllPersonResponse';
 import { onMounted, ref } from 'vue';
 import { usePersonStore } from '../../../store/personStore';
 
@@ -8,7 +9,16 @@ const personStore = usePersonStore();
 const currentPage = ref(1);
 
 onMounted(async () => {
-    await personStore.getAll();
+    const request: IGetAllPersonRequest = {
+        pageNumber: 0,
+        pageSize: 0,
+        searchTerm: '',
+        sortColumn: '',
+        reverseOrder: false,
+        enable: false
+    };
+
+    await personStore.getAll(request);
 });
 
 const initFilters = () => {
@@ -30,6 +40,16 @@ const clearFilter = () => {
 
 function onPageChange(event) {
     console.log('mudança de pagina', event);
+    const pageNumber = event + 1;
+    const pageSize = event.rows;
+    const request: IGetAllPersonRequest = {
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        searchTerm: '',
+        sortColumn: '',
+        reverseOrder: false,
+        enable: false
+    };
 }
 </script>
 

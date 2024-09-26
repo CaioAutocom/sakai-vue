@@ -22,7 +22,7 @@ export const usePersonStore = defineStore('pessoa', {
     actions: {
         async getAll(personsRequest: IGetAllPersonRequest): Promise<void> {
             try {
-                const response: IGetAllPersonResponse = await personService.getAll();
+                const response: IGetAllPersonResponse = await personService.getAll(personsRequest);
                 this.personsResponse = response;
             } catch (error) {
                 this.error = error;

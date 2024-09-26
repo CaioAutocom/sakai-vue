@@ -1,14 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-
 import { usePersonStore } from '../../../store/personStore';
 import ListPessoas from './ListPessoas.vue';
 
 const pessoaStore = usePersonStore();
-
-onMounted(() => {
-    pessoaStore.getAll();
-});
 
 const openForm = () => {
     pessoaStore.showForm();
