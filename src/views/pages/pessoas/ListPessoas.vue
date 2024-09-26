@@ -5,6 +5,7 @@ import { usePersonStore } from '../../../store/personStore';
 
 const filters = ref();
 const personStore = usePersonStore();
+const currentPage = ref(1);
 
 onMounted(async () => {
     await personStore.getAll();
@@ -26,6 +27,10 @@ initFilters();
 const clearFilter = () => {
     initFilters();
 };
+
+function onPageChange(event) {
+    console.log('mudança de pagina', event);
+}
 </script>
 
 <template>
@@ -34,10 +39,8 @@ const clearFilter = () => {
             v-model:filters="filters"
             v-model:selection="personStore.selectedPersons"
             :value="personStore.personsResponse?.items ?? []"
-            stripedRows
             showGridlines
-            paginator
-            :rows="personStore.personsResponse.totalItems"
+            :rows="personStore.personsResponse?.totalItems ?? 0"
             dataKey="id"
             filterDisplay="menu"
             :globalFilterFields="['nome', 'apelido', 'cpfcnpj', 'identidade', 'ativo']"
@@ -53,7 +56,7 @@ const clearFilter = () => {
                     </IconField>
                 </div>
             </template>
-            <template #empty> No customers found. </template>
+            <template #empty> Nenhum registro encontrado. </template>
             <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
             <Column field="nome" header="Name" sortable style="min-width: 14rem">
                 <template #body="{ data }">
@@ -87,7 +90,7 @@ const clearFilter = () => {
                     <InputText v-model="filterModel.value" type="text" placeholder="Procurar por identidade" />
                 </template>
             </Column>
-            <Column field="ativo" header="ativo" sortable style="max-width: 5rem">
+            <Column field="ativo" header="Ativo" sortable style="max-width: 5rem" class="self-center">
                 <template #body="{ data }">
                     <Checkbox v-model="data.ativo" :binary="true" :readonly="true" />
                 </template>
@@ -96,5 +99,6 @@ const clearFilter = () => {
                 </template>
             </Column>
         </DataTable>
+        <Paginator :rows="15" :totalRecords="personStore?.personsResponse?.totalItems ?? 0" :rowsPerPageOptions="[15, 30, 50]" @page="onPageChange(event)"></Paginator>
     </div>
 </template>

@@ -14,6 +14,8 @@ export default function setupApi() {
 
             if (token) {
                 config.headers['Authorization'] = `Bearer ${token.token}`;
+            } else {
+                console.log('token nao encontrado');
             }
             return config;
         },

@@ -37,6 +37,7 @@ declare module 'vue' {
     MiscDoc: typeof import('./src/views/uikit/MiscDoc.vue')['default']
     MultiSelect: typeof import('primevue/multiselect')['default']
     OverlayDoc: typeof import('./src/views/uikit/OverlayDoc.vue')['default']
+    Paginator: typeof import('primevue/paginator')['default']
     PanelsDoc: typeof import('./src/views/uikit/PanelsDoc.vue')['default']
     Password: typeof import('primevue/password')['default']
     PessoaPage: typeof import('./src/views/pages/pessoas/PessoaPage.vue')['default']

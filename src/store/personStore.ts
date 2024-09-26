@@ -1,4 +1,4 @@
-import { IGetAllPersonResponse } from 'models/responses/IGetAllPersonResponse';
+import { IGetAllPersonRequest, IGetAllPersonResponse } from 'models/responses/IGetAllPersonResponse';
 import { defineStore } from 'pinia';
 import { container } from '../containers';
 import { IPersonService } from '../interfaces/IPersonService';
@@ -15,11 +15,12 @@ export const usePersonStore = defineStore('pessoa', {
         formVisible: false,
         error: null,
         personsResponse: null,
-        selectedPersons: [] as IPerson[]
+        selectedPersons: [] as IPerson[],
+        personsRequest: null
     }),
 
     actions: {
-        async getAll(): Promise<void> {
+        async getAll(personsRequest: IGetAllPersonRequest): Promise<void> {
             try {
                 const response: IGetAllPersonResponse = await personService.getAll();
                 this.personsResponse = response;

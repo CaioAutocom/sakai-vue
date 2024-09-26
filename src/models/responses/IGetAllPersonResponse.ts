@@ -9,3 +9,12 @@ export interface IGetAllPersonResponse {
     hasPrevious: boolean;
     hasNext: boolean;
 }
+
+export interface IGetAllPersonRequest {
+    pageNumber: number | null;
+    pageSize: number | null;
+    searchTerm: string | null;
+    sortColumn: string | null;
+    reverseOrder: boolean;
+    enable: boolean;
+}
