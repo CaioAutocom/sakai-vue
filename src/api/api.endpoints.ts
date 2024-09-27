@@ -1,5 +1,6 @@
 export const API_ENDPOINTS = {
-    apiUrl: 'https://api.esistem.com.br:5100/api',
+    apiIdentidade: 'https://api.esistem.com.br:5100/api',
+    // apiCadastros: 'https://api.esistem.com.br:5120/api',
     apiUrlHttps: 'https://192.168.245.250:5100/api',
     // users
     addUser: '/users',
@@ -20,6 +21,7 @@ export const API_ENDPOINTS = {
     personName: '/person/name:',
     personCpfCnpj: '/person/cpfCnpj:',
     personListAll: '/person/list-all',
+    // personListAll: '/pessoa/listar',
     personUpdate: '/person/update',
     personDelete: '/person/delete'
 };

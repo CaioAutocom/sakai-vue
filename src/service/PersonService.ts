@@ -9,7 +9,7 @@ const api = setupApi();
 
 @injectable()
 export class PersonService implements IPersonService {
-    private apiUrl = API_ENDPOINTS.apiUrl;
+    private apiUrl = API_ENDPOINTS.apiIdentidade;
 
     async getbyId(id: number): Promise<IPerson[]> {
         throw new Error('Method not implemented.');
@@ -30,7 +30,7 @@ export class PersonService implements IPersonService {
         if (sortColumn) params.append('SortColumn', sortColumn);
         if (searchTerm) params.append('searchterm', searchTerm);
 
-        const response = await api.get<IGetAllPersonResponse>(`${baseUrl}?${params.toString()}`);
+        const response = await api.get<IGetAllPersonResponse>(`${baseUrl}${params ? '?' + params.toString() : ''}`);
         return response.data;
     }
     async update(person: IPerson): Promise<void> {

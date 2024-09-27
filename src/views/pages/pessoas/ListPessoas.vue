@@ -6,12 +6,11 @@ import { usePersonStore } from '../../../store/personStore';
 
 const filters = ref();
 const personStore = usePersonStore();
-const currentPage = ref(1);
 
 onMounted(async () => {
     const request: IGetAllPersonRequest = {
-        pageNumber: 0,
-        pageSize: 0,
+        pageNumber: 1,
+        pageSize: 15,
         searchTerm: '',
         sortColumn: '',
         reverseOrder: false,
@@ -28,7 +27,7 @@ const initFilters = () => {
         apelido: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         cpfCnpj: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         identidade: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        status: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] }
+        status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] }
     };
 };
 
@@ -38,9 +37,19 @@ const clearFilter = () => {
     initFilters();
 };
 
-function onPageChange(event) {
+const formatValue = (data: boolean): string => {
+    return data ? 'Ativo' : 'Desativado';
+};
+
+function getSeverity(status: boolean) {
+    return status ? 'success' : 'danger';
+}
+
+const statuses = ['Ativo', 'Desativado'];
+function onPageChange(event: any) {
     console.log('mudança de pagina', event);
-    const pageNumber = event + 1;
+
+    const pageNumber = event.page + 1;
     const pageSize = event.rows;
     const request: IGetAllPersonRequest = {
         pageNumber: pageNumber,
@@ -50,6 +59,8 @@ function onPageChange(event) {
         reverseOrder: false,
         enable: false
     };
+
+    personStore.getAll(request);
 }
 </script>
 
@@ -62,8 +73,10 @@ function onPageChange(event) {
             showGridlines
             :rows="personStore.personsResponse?.totalItems ?? 0"
             dataKey="id"
+            selectionMode="multiple"
             filterDisplay="menu"
             :globalFilterFields="['nome', 'apelido', 'cpfcnpj', 'identidade', 'ativo']"
+            headerClass="mb-6"
         >
             <template #header>
                 <div class="flex justify-between">
@@ -78,7 +91,7 @@ function onPageChange(event) {
             </template>
             <template #empty> Nenhum registro encontrado. </template>
             <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-            <Column field="nome" header="Name" sortable style="min-width: 14rem">
+            <Column field="nome" header="Nome" sortable style="min-width: 14rem">
                 <template #body="{ data }">
                     {{ data.nome }}
                 </template>
@@ -110,15 +123,24 @@ function onPageChange(event) {
                     <InputText v-model="filterModel.value" type="text" placeholder="Procurar por identidade" />
                 </template>
             </Column>
-            <Column field="ativo" header="Ativo" sortable style="max-width: 5rem" class="self-center">
+            <Column field="ativo" header="Status" sortable style="max-width: 6rem" class="self-center">
                 <template #body="{ data }">
-                    <Checkbox v-model="data.ativo" :binary="true" :readonly="true" />
+                    <Tag :value="formatValue(data.ativo)" :severity="getSeverity(data.ativo)" />
                 </template>
                 <template #filter="{ filterModel }">
-                    <InputText v-model="filterModel.value" type="text" />
+                    <Select v-model="filterModel.value" :options="statuses" placeholder="Escolha um" showClear>
+                        <template #option="slotProps">
+                            <Tag :value="slotProps.option" :severity="getSeverity(slotProps.option)" />
+                        </template>
+                    </Select>
                 </template>
             </Column>
         </DataTable>
-        <Paginator :rows="15" :totalRecords="personStore?.personsResponse?.totalItems ?? 0" :rowsPerPageOptions="[15, 30, 50]" @page="onPageChange(event)"></Paginator>
+        <Paginator :rows="15" :totalRecords="personStore?.personsResponse?.totalItems ?? 0" :rowsPerPageOptions="[15, 30, 50]" @page="onPageChange"></Paginator>
     </div>
 </template>
+<style scoped>
+sortable-right .p-sortable-column-icon {
+    margin-left: auto;
+}
+</style>
