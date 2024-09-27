@@ -19,6 +19,7 @@ onMounted(async () => {
 
     await personStore.getAll(request);
 });
+const statuses = ref(['Ativo', 'Desativado']);
 
 const initFilters = () => {
     filters.value = {
@@ -27,7 +28,10 @@ const initFilters = () => {
         apelido: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         cpfCnpj: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         identidade: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] }
+        ativo: {
+            operator: FilterOperator.OR,
+            constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+        }
     };
 };
 
@@ -45,7 +49,6 @@ function getSeverity(status: boolean) {
     return status ? 'success' : 'danger';
 }
 
-const statuses = ['Ativo', 'Desativado'];
 function onPageChange(event: any) {
     console.log('mudança de pagina', event);
 
@@ -123,12 +126,12 @@ function onPageChange(event: any) {
                     <InputText v-model="filterModel.value" type="text" placeholder="Procurar por identidade" />
                 </template>
             </Column>
-            <Column field="ativo" header="Status" sortable style="max-width: 6rem" class="self-center">
+            <Column header="Status" field="ativo" sortable :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                 <template #body="{ data }">
                     <Tag :value="formatValue(data.ativo)" :severity="getSeverity(data.ativo)" />
                 </template>
                 <template #filter="{ filterModel }">
-                    <Select v-model="filterModel.value" :options="statuses" placeholder="Escolha um" showClear>
+                    <Select v-model="filterModel.value" :options="statuses" placeholder="Select One" showClear>
                         <template #option="slotProps">
                             <Tag :value="slotProps.option" :severity="getSeverity(slotProps.option)" />
                         </template>
